@@ -1,0 +1,197 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="container-fluid">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-6">
+                <h3>Directory List</h3>
+            </div>
+            <div class="col-6">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item">User</li>
+                    <li class="breadcrumb-item active">Transaction</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card" id="created_post_data">
+                <div class="card-body" >
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-user-modal"><i class="fa fa-plus"></i> Add Data</button>
+                    <br><br>
+                    <table class="table table-sm table-bordered table-hover w-100" id="post-data">
+                        <thead>
+                            <th>Action</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center" style="width:250px;">Position</th>
+                            <th class="text-center">Email</th>
+                            <th class="text-center">Information</th>
+                            <th class="text-center">Date Created</th>
+                            <th class="text-center">Created By</th>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="add-user-modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header flex-column position-relative">
+                <h5 class="modal-title f-w-700">Directory list</h5>
+                <small class="modal-subtitle">Please fill out the form below.</small>
+                <button class="btn-close position-absolute" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="submitForm">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group mb-3">
+                        <label>Name <span class="txt-danger">*</span></label>
+                        <input type="text" class="form-control" id="Name" name="Name" autocomplete="off" required>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label>Position <span class="txt-danger">*</span></label>
+                        <input type="text" class="form-control" id="Position" name="Position" autocomplete="off">
+                        <div class="invalid-url"></div>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Email" class="form-label">Email <span class="txt-danger">*</span></label>
+                        <input type="text" class="form-control" id="Email" name="Email" autocomplete="off">
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Remarks" class="form-label">Information <span class="txt-danger">*</span></label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" name="Information" rows="3" placeholder="Information" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" type="button" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editDirectory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            {% csrf_token %}
+            <div class="modal-body" id="load_data">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script for="init">
+    $(document).ready(function(){
+        $('#post-data').DataTable({
+            'serverSide': true,
+            'processing': true,
+            'deferRender': true,
+            'lengthMenu': [ 10, 25, 50, 100 ],
+            'order': [[ 2, 'desc' ]],
+            'bDestroy': true,
+            'ajax': {
+                
+                'url': '/api/created_post/directoryviews/?format=datatables',
+                'type': 'GET',
+            },
+            'fnCreatedRow': function (row, data, index) {
+                $(row).attr('id', data['id']);
+            },
+            'columns': [
+                {'data': 'id',
+                    'render': function(data, type, row, meta) {
+                        return "<a href='javascript:void(0);' data-role='details' data-id='"+ row['id'] + "'>Details</a>"
+                    },
+                    'searchable': false,
+                    'sortable': false
+                },
+                {'data': 'name','className': 'text-center'},
+                {'data': 'position','className': 'text-center', 'searchable': false,'sortable': false},
+                {'data': 'email','className': 'text-center', 'searchable': false,'sortable': false},
+                {'data': 'information','className': 'text-center', 'searchable': false,'sortable': false},
+                {'data': 'date_created','className': 'text-center','searchable': false,'sortable': false},
+                {'data': 'created_by','className': 'text-center', 'searchable': false,'sortable': false},
+            ]
+        });
+    });
+    $(document).on('click','a[data-role=details]', function(){ // FOR MODAL SUMMARY
+        var id = $(this).data('id');
+        console.log(id)
+        $('#editDirectory').modal('show').find('#load_data').load('/create/modalForDirectoryList/' + $(this).data('id'));
+    });
+</script>
+<script for="request">
+        function validationForm(){
+            var invalid = false;
+            $('.form-control').each(function() {
+                if (/<[a-z][\s\S]*>/i.test($(this).val())) {
+                    $(this).addClass('is-invalid');
+                    $(this).next('.invalid-feedback').html("The field cannot contain HTML tags.")
+                    invalid = true;
+                }
+            });
+            return invalid;
+        }
+
+        function clearValidation(){
+            $('.form-control').each(function() {
+                $(this).removeClass('is-invalid');
+                $(this).next('.invalid-feedback').html("");
+            });
+        }
+
+        $('#submitForm').on('submit', function(e){
+            e.preventDefault();
+            if (!validationForm()){
+                var form = new FormData(this);
+                Swal.fire({
+                    title: "Are you sure",
+                    text: "You want add this in your directory?",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes",
+                    allowOutsideClick: false,
+                    showLoaderOnConfirm: true,
+                    preConfirm: function (){
+                        return $.post({
+                            url: "{% url 'create_directory' %}",
+                            data: form,
+                            success : function (response){
+                                if(!response.error){
+                                    Swal.fire({
+                                        title: "Good job!",
+                                        html:  response.msg,
+                                        icon: "success",
+                                        allowOutsideClick: false,
+                                    }).then((result) => {
+                                        if (result.isConfirmed){
+                                            $('#submitForm').trigger('reset');
+                                            $('#post-data').DataTable().ajax.reload();
+                                            clearValidation();
+                                            $('#add-user-modal').modal('hide');
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire('Oops...', response.msg, 'warning');
+                                }
+                            },
+                            cache       : false,
+                            contentType : false,
+                            processData : false,
+                        });
+                    },
+                });
+            }
+        });
+</script>
+{% endblock %}

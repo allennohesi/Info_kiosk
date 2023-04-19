@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load tags %}
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>INFORMATION - KIOSK </title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link rel="shortcut icon" href="{% static 'images/logo/logo.png' %}" type="image/x-icon" />
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'landingpage/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'landingpage/assets/css/main.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: UpConstruction
+  * Updated: Mar 10 2023 with Bootstrap v5.2.3
+  * Template URL: https://bootstrapmade.com/upconstruction-bootstrap-construction-website-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+        <a href="{% url 'landingpage' %}" class="logo d-flex align-items-center">
+            <!-- Uncomment the line below if you also wish to use an image logo -->
+            <!-- <img src="assets/img/logo.png" alt=""> -->
+            <h1>Information Kiosk<span>.</span></h1>
+        </a>
+
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="{% url 'landingpage' %}">Home</a></li>
+          <li><a href="{% url 'proceed' %}">Category</a></li>
+          <li class="dropdown"><a href="#"  class="active"><span>Services</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>
+              <li><a href="{% url 'FrontlineServices' %}">Frontline Services</a></li>
+              <li><a href="{% url 'NonFrontlineServices' %}">Non-Frontline Services</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('{% static 'landingpage/assets/img/services/pantawid.jpg' %}');">
+      <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
+
+        <h2>{{created_post.title}} Details</h2>
+        <ol>
+          <li><a href="{% url 'landingpage' %}"><i class="fa-solid fa-arrow-left"></i> BACK TO HOME </a></li>
+          <li>{{created_post.title}}</li>
+        </ol>
+
+      </div>
+    </div><!-- End Breadcrumbs -->
+
+    <!-- ======= Blog Details Section ======= -->
+    <section id="blog" class="blog">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        <ul class="nav nav-tabs row  g-2 d-flex">
+          <li class="nav-item col-6">
+            <a class="nav-link active show text-dark" data-bs-toggle="tab" data-bs-target="#tab-1">
+              <p>Portable Document Format</p>
+            </a>
+          </li><!-- End tab nav item -->
+          <li class="nav-item col-6">
+            <a class="nav-link text-dark" data-bs-toggle="tab" data-bs-target="#tab-2">
+              <p>Video Format</p>
+            </a><!-- End tab nav item -->
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane active show" id="tab-1">
+            <div class="row">
+              <div class="col-lg-12 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100">
+                <hr>
+                <div class="row g-5">
+                  <div class="col-lg-4">
+                    <div class="sidebar">
+                      <div class="sidebar-item categories">
+                        <h3 class="sidebar-title">Services</h3>
+                        <ul class="mt-1 nav nav-tabs row g-2 d-flex mt-3">
+                          {% for row in uploaded %}
+                          {% if row.id == uploaded_specific.id %}
+                          <li><a class="nav-link active" data-bs-toggle="tab" data-bs-target="#{{row.title_post}}">{{row.title_text}}</a></li>
+                          {% else %}
+                          <li><a class="nav-link" data-bs-toggle="tab" data-bs-target="#{{row.title_post}}">{{row.title_text}}</a></li>
+                          {% endif %}
+                          {% endfor %}
+                        </ul>
+                      </div>
+                      <!-- End sidebar categories-->
+                      <!-- End sidebar recent posts-->
+                      <!-- End sidebar tags-->
+        
+                    </div><!-- End Blog Sidebar -->
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="tab-content">
+                      {% for row in uploaded %}
+                      {% if row.id == uploaded_specific.id %}
+                      <div class="tab-pane active show" id="{{row.title_post}}">
+                        <div class="row">
+                          <article class="blog-details">
+                            <h2 class="title">Title: <u>{{row.title_text}}</u></h2>
+                            <div class="content">
+                              <p>
+                                {{row.description_post}}
+                              </p>
+                            </div>
+                            <div class="meta-top">
+                              <ul>
+                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2020-01-01">{{row.date_created}}</time></a></li>
+                              </ul>
+                            </div>
+                            <br>
+                              {% if row.file_ext == ".mp4"  %}
+                                  <video controls src="{{row.file_upload.url}}" style="width:100%; height:100%"></video>
+                              {% elif row.file_ext == ".pdf" %}
+                                  <iframe src="{{row.file_upload.url}}" width="100%" height="750px" frameborder="0" style="border:1px solid #CCC;"></iframe>
+                              {% else %}
+                                  <div class="post-img">
+                                      <img src="{{row.file_upload.url}}" alt="" class="img-fluid">
+                                  </div>
+                              {% endif %}
+                          </article>
+                          <br>
+                          
+                        </div>
+                      </div>
+                      {% else%}
+                      <div class="tab-pane" id="{{row.title_post}}">
+                        <div class="row">
+                          <article class="blog-details">
+                            <h2 class="title">Title: <u>{{row.title_text}}</u></h2>
+                            <div class="content">
+                              <p>
+                                  {{row.description_post}}
+                              </p>
+                            </div>
+                            <div class="meta-top">
+                              <ul>
+                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2020-01-01">{{row.date_created}}</time></a></li>
+                              </ul>
+                            </div>
+                            <br>
+                              {% if row.file_ext == ".mp4"  %}
+                                  <video controls src="{{row.file_upload.url}}" style="width:100%; height:100%"></video>
+                              {% elif row.file_ext == ".pdf" %}
+                                  <iframe src="{{row.file_upload.url}}" width="100%" height="750px" frameborder="0" style="border:1px solid #CCC;"></iframe>
+                              {% else %}
+                                  <div class="post-img">
+                                      <img src="{{row.file_upload.url}}" alt="" class="img-fluid">
+                                  </div>
+                              {% endif %}
+                          </article>
+                          <br>
+                          
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% endfor %}<!-- End tab content item -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- End tab content item -->
+          <div class="tab-pane" id="tab-2">
+            <div class="row">
+              <div class="col-lg-12 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center">
+                <hr>
+                <div class="col-lg-12">
+                  <div class="tab-content">
+                    {% for row in uploaded_video %}
+                    <div class="tab-pane active show" id="{{row.title_post}}">
+                      <div class="row">
+                        <article class="blog-details">
+                          <h2 class="title">Title: <u>{{row.title_text}}</u></h2>
+                          <div class="content">
+                            <p>
+                              {{row.description_post}}
+                            </p>
+                          </div>
+                          <div class="meta-top">
+                            <ul>
+                              <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2020-01-01">{{row.date_created}}</time></a></li>
+                            </ul>
+                          </div>
+                          <br>
+                            <video controls src="{{row.file_upload.url}}" style="width:100%; height:450px;"></video>
+                        </article>
+                        <br>
+                        
+                      </div>
+                    </div>
+                    {% endfor %}<!-- End tab content item -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div><!-- End tab content item -->
+        </div>
+      </div>
+    </section><!-- End Blog Details Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="footer-content position-relative">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-info">
+              <h3>INFORMATION KIOSK</h3>
+              <p>
+                Developer: Allen Efren O. Hilado <br>
+                Brgy 6, Nasipit<br><br>
+                <strong>Phone:</strong> 09487418673<br>
+                <strong>Email:</strong> aeohilado@dswd.gov.ph<br>
+              </p>
+              <div class="social-links d-flex mt-3">
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div><!-- End footer info column-->
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-legal text-center position-relative">
+      <div class="container">
+        <div class="copyright">
+          &copy; Copyright <strong><span>RICTMS</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+          Developed by: Allen Efren O. Hilado</a>
+        </div>
+      </div>
+    </div>
+
+  </footer>
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'landingpage/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'assets/vendor/libs/jquery/jquery.js' %}"></script>
+  <!-- Template Main JS File -->
+  <script src="{% static 'landingpage/assets/js/main.js' %}"></script>
+
+</body>
+
+</html>

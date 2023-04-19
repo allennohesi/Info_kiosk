@@ -1,0 +1,31 @@
+<div class="row mb-3"id="modal_view">
+    {% if dataPicture %}
+    <figure class="col-sm-12" itemprop="associatedMedia" itemscope=""><img class="img-fluid rounded" src="{{dataPicture.photo.url}}" itemprop="thumbnail" alt="gallery" width="100%">
+    </figure>
+    {% endif %}
+    <div class="modal-body">
+        <form id="submitEditForm">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label>Name<span class="txt-danger">*</span></label>
+                <input type="text" class="form-control" id="first_name" name="first_name" value="{{data.name}}" autocomplete="off" required readonly>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group mb-3">
+                <label>Position <span class="txt-danger">*</span></label>
+                <input type="text" class="form-control" id="last_name" name="last_name" value="{{data.position}}" autocomplete="off" required readonly>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group mb-3">
+                <label>Email <span class="txt-danger">*</span></label>
+                <input type="email" class="form-control" id="email" name="email" value="{{data.email}}" autocomplete="off" required readonly>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group mb-3">
+                <label>Information <span class="txt-danger">*</span></label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" name="Information" rows="3" placeholder="" required readonly>{{data.information}}</textarea>
+                <div class="invalid-feedback"></div>
+            </div>
+        </form>
+    </div>
+</div>
