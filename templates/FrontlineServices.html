@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load tags %}
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>INFORMATION - KIOSK </title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link rel="shortcut icon" href="{% static 'images/logo/logo.png' %}" type="image/x-icon" />
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'landingpage/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Template Main CSS File -->
+  <link href="{% static 'landingpage/assets/css/main.css' %}" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: UpConstruction
+  * Updated: Mar 10 2023 with Bootstrap v5.2.3
+  * Template URL: https://bootstrapmade.com/upconstruction-bootstrap-construction-website-template/
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+      <a href="{% url 'landingpage' %}" class="logo d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="assets/img/logo.png" alt=""> -->
+        <h1>Information Kiosk<span>.</span></h1>
+      </a>
+
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+      <nav id="navbar" class="navbar">
+        <nav id="navbar" class="navbar">
+          <ul>
+            <li><a href="{% url 'landingpage' %}">Home</a></li>
+            <li><a href="{% url 'proceed' %}">Category</a></li>
+            <li class="dropdown"><a href="#"  class="active"><span>Services</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+              <ul>
+                <li><a href="{% url 'FrontlineServices' %}">Frontline Services</a></li>
+                <li><a href="{% url 'NonFrontlineServices' %}">Non-Frontline Services</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <main id="main">
+
+    <!-- ======= Breadcrumbs ======= -->
+    <div class="breadcrumbs d-flex align-items-center" style="background-image: url('{% static 'landingpage/assets/img/services/PROMOTIVE.jpg' %}');">
+      <div class="container position-relative d-flex flex-column align-items-center" data-aos="fade">
+
+        <h2>Services</h2>
+        <ol>
+          <li><a href="{% url 'landingpage' %}"><i class="fa-solid fa-arrow-left"></i> BACK TO HOME </a></li>
+          <li>Frontline Services</li>
+        </ol>
+
+      </div>
+    </div><!-- End Breadcrumbs -->
+
+    
+    <!-- Modal -->
+    <div class="modal fade bd-example-modal-xl" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+              {% csrf_token %}
+              <div class="modal-body" id="load_data">
+              </div>
+          </div>
+      </div>
+    </div>
+    <!-- ======= Blog Section ======= -->
+    <section id="blog" class="blog">
+      
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4 posts-list">
+
+          {% for row in data %}
+          <div class="col-md-3 col-sm-1">
+            <div class="post-item position-relative h-100">
+
+              <div class="post-img position-relative overflow-hidden">
+                {% if row.get_pict.url %}
+                <a href="{% url 'indexData' row.id %}"><img src="{{row.get_pict.url}}" class="img-fluid" alt="" width="400" height="500"></a>
+                {% else %}
+                <a href="{% url 'indexData' row.id %}"><img src="{{row.photo.url}}" class="img-fluid" alt="" width="100%" height="100%"></a>
+                {% endif %}
+                {% comment %} <span class="post-date">{{row.date_created}}</span> {% endcomment %}
+              </div>
+
+              <div class="post-content d-flex flex-column">
+                <a href="{% url 'indexData' row.id %}"><h3 class="post-title">{{row.title}}</h3></a>
+                <hr>
+                <p>
+                  <i class="bi bi-geo-alt"></i> Location: {{row.get_location}}
+                </p>
+                {% comment %} <hr>
+                <div class="meta d-flex align-items-center">
+                  <a href='#' data-role='modal' data-id="{{row.id}}">
+                    <div class="d-flex align-items-center">
+                      <i class="bi bi-folder2"></i> <span class="ps-2">Location</span>
+                    </div>
+                  </a>
+                </div> {% endcomment %}
+                {% comment %} <a href="{% url 'indexData' row.id %}" class="readmore stretched-link"><span>Read More</span><i class="bi bi-arrow-right"></i></a> {% endcomment %}
+              </div>
+              
+            </div>
+            
+          </div>
+          {% endfor %} <!-- End post list item -->
+          <!-- Button trigger modal -->
+
+        </div><!-- End blog posts list -->
+
+        {% comment %} <div class="blog-pagination">
+          <ul class="justify-content-center">
+            <li><a href="#">1</a></li>
+            <li class="active"><a href="#">2</a></li>
+            <li><a href="#">3</a></li>
+          </ul>
+        </div><!-- End blog pagination --> {% endcomment %}
+
+      </div>
+
+    </section><!-- End Blog Section -->
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  <footer id="footer" class="footer">
+
+    <div class="footer-content position-relative">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-info">
+              <h3>INFORMATION KIOSK</h3>
+              <p>
+                Developer: Allen Efren O. Hilado <br>
+                Brgy 6, Nasipit<br><br>
+                <strong>Phone:</strong> 09487418673<br>
+                <strong>Email:</strong> aeohilado@dswd.gov.ph<br>
+              </p>
+              <div class="social-links d-flex mt-3">
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div><!-- End footer info column-->
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-legal text-center position-relative">
+      <div class="container">
+        <div class="copyright">
+          &copy; Copyright <strong><span>RICTMS</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+          Developed by: Allen Efren O. Hilado</a>
+        </div>
+      </div>
+    </div>
+
+  </footer>
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'landingpage/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'assets/vendor/libs/jquery/jquery.js' %}"></script>
+  <!-- Template Main JS File -->
+  <script src="{% static 'landingpage/assets/js/main.js' %}"></script>
+  <script>
+    $(document).on('click','a[data-role=modal]', function(){
+      var id = $(this).data('id');
+      console.log(id)
+      $('#modal').modal('show').find('#load_data').load('/modalforData/' +id);
+  });
+  </script>
+</body>
+
+</html>

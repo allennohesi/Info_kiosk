@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+{% load static %}
+{% load tags %}
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>INFORMATION - KIOSK </title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link rel="shortcut icon" href="{% static 'images/logo/logo.png' %}" type="image/x-icon" />
+
+  <!-- <link href="assets/img/bootstrap1.png" rel="apple-touch-icon"> -->
+
+  <!-- Google Fonts -->
+
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600;1,700&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Work+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'landingpage/assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'landingpage/assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'css/vendors/datatables.css' %}">
+  <!-- Template Main CSS File -->
+  <link href="{% static 'landingpage/assets/css/main.css' %}" rel="stylesheet">
+</head>
+  <style>
+    
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+    body {
+      font-family: Inter;
+    }
+    .radio
+    {
+        display: none;
+    }
+    .emoji
+    {
+        font-size: 40px;
+        padding: 5px 10px;
+        cursor: pointer;
+        display: inline-block;
+    }
+    #mood-1:checked ~ .emoji-1,
+    #mood-2:checked ~ .emoji-2,
+    #mood-3:checked ~ .emoji-3,
+    #mood-4:checked ~ .emoji-4,
+    #mood-5:checked ~ .emoji-5
+    {
+        background-color: #E5E4E2;
+    }
+    </style>
+<body>
+
+  <!-- ======= Header ======= -->
+  <header id="header" class="header d-flex align-items-center">
+    <div class="container-fluid container-xl d-flex align-items-center justify-content-between">
+
+      <a href="{% url 'landingpage' %}" class="logo d-flex align-items-center">
+        <!-- Uncomment the line below if you also wish to use an image logo -->
+        <!-- <img src="assets/img/logo.png" alt=""> -->
+        <h1>Information Kiosk<span>.</span></h1>
+      </a>
+
+      <i class="mobile-nav-toggle mobile-nav-show bi bi-list"></i>
+      <i class="mobile-nav-toggle mobile-nav-hide d-none bi bi-x"></i>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a href="{% url 'landingpage' %}" class="active">Home</a></li>
+          <li><a href="#directory">Directory</a></li>
+          <li class="dropdown"><a href="#"><span>Services</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+            <ul>
+              <li><a href="{% url 'FrontlineServices' %}">Frontline Services</a></li>
+              {% comment %} <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                <ul>
+                  <li><a href="#">Deep Dropdown 1</a></li>
+                  <li><a href="#">Deep Dropdown 2</a></li>
+                  <li><a href="#">Deep Dropdown 3</a></li>
+                  <li><a href="#">Deep Dropdown 4</a></li>
+                  <li><a href="#">Deep Dropdown 5</a></li>
+                </ul>
+              </li> {% endcomment %}
+              <li><a href="#">Non-Frontline Services</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav><!-- .navbar -->
+
+    </div>
+  </header><!-- End Header -->
+
+  <!-- ======= Hero Section ======= -->
+  <section id="hero" class="hero">
+
+    <div class="info d-flex align-items-center">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-6 text-center">
+
+            <a data-aos="fade-up" data-aos-delay="200" href="{% url 'proceed' %}" class="btn-get-started">PROCEED</a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="hero-carousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="8000">
+
+      <div class="carousel-item active"><img src="{% static 'landingpage/assets/img/hero-carousel/1.jpg' %}" width="100%" height="100%"></div>
+      <div class="carousel-item"><img src="{% static 'landingpage/assets/img/hero-carousel/2.jpg' %}" width="100%" height="100%"></div>
+      <div class="carousel-item"><img src="{% static 'landingpage/assets/img/hero-carousel/3.jpg' %}" width="100%" height="100%"></div>
+      <div class="carousel-item"><img src="{% static 'landingpage/assets/img/hero-carousel/4.jpg' %}" width="100%" height="100%"></div>
+      <div class="carousel-item"><img src="{% static 'landingpage/assets/img/hero-carousel/ServicePledge.png' %}" width="100%" height="100%"></div>
+      <div class="carousel-item"><img src="{% static 'landingpage/assets/img/hero-carousel/6.jpg' %}" width="100%" height="100%"></div>
+      <a class="carousel-control-prev" href="#hero-carousel" role="button" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon bi bi-chevron-left" aria-hidden="true"></span>
+      </a>
+
+      <a class="carousel-control-next" href="#hero-carousel" role="button" data-bs-slide="next">
+        <span class="carousel-control-next-icon bi bi-chevron-right" aria-hidden="true"></span>
+      </a>
+
+    </div>
+
+  </section><!-- End Hero Section -->
+
+  <main id="main">
+
+    <section id="feedback" class="get-started section-bg">
+      <div class="container">
+
+        <div class="row justify-content-between gy-4">
+
+          <div class="col-lg-7" data-aos="fade">
+            <form action="forms/quote.php" method="post" class="php-email-form">
+              <h3>DSWD FO Caraga address</h3>
+              <p>Location: R. Palma St. Butuan City 8600</p>
+              <div class="row gy-3">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3941.305086676114!2d125.53317140580168!3d8.944008937116951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3301c04fea75abc9%3A0xc04cf3f7a098d4e7!2sDepartment%20of%20Social%20Welfare%20and%20Development%20(DSWD)%20-%20Field%20Office%20Caraga!5e0!3m2!1sen!2sph!4v1678339955781!5m2!1sen!2sph" width="100%" height="370" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              </div>
+            </form>
+          </div>
+          
+          <div class="col-lg-5" data-aos="fade">
+            <div class="card">
+              <div class="card-body">
+                <form id="submitForm" class="php-form">
+                  {% csrf_token %}
+                  <h3>Feedback:</h3>
+                  <p>You can feedback here all the queries.</p>
+                  <div class="row gy-3">
+                    <div class="col-md-12">
+                      <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+                    </div>
+
+                    <div class="col-md-12">
+                      <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
+                    </div>
+                    <div class="col-md-6">
+                      <input type="radio" id="male" name="sex" value="1" required>
+                      <label for="male">Male</label>
+                      <input type="radio" id="female" name="sex" value="2" required>
+                      <label for="female">Female</label><br>
+                    </div>
+                    <div class="form-group">
+                        <label>You feeling: </label>
+                        <br>
+                        <input type="radio" id="mood-1" name="mood" value='Worried' class="radio" checked>
+                        <label class="emoji emoji-1" for='mood-1'>😟</label>
+                            
+                        <input type="radio" id="mood-2" name="mood" value='Sad' class="radio">
+                        <label class="emoji emoji-2" for='mood-2'>😡</label>  
+                            
+                        <input type="radio" id="mood-3" name="mood" value='Confused' class="radio">
+                        <label class="emoji emoji-3" for='mood-3'>😔</label>  
+                          
+                        <input type="radio" id="mood-4" name="mood" value='Happy' class="radio">
+                        <label class="emoji emoji-4" for='mood-4'>😊</label>
+                            
+                        <input type="radio" id="mood-5" name="mood" value='Joyful' class="radio">
+                        <label class="emoji emoji-5" for='mood-5'>😂</label>     
+                    </div>
+                  <button class="btn btn-warning" type="submit">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div><!-- End Quote Form -->
+
+        </div>
+
+      </div>
+    </section><!-- End Get Started Section -->
+    <section id="directory" class="team">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2>CARAGA REGION</h2>
+        </div>
+
+        <div class="row gy-5">
+          <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="200">
+            <div class="member-img">
+              <img src="{% static 'landingpage/assets/img/Officials/arda.png' %}" class="img-fluid" alt="">
+            </div>
+            <div class="member-info text-center">
+              <h4>Atty. Faizal A. Padate</h4>
+              <span>Assistant Regional Director for Administration</span>
+            </div>
+          </div><!-- End Team Member -->
+          
+          <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="100">
+            <div class="member-img">
+              <img src="{% static 'landingpage/assets/img/Officials/rd.png' %}" class="img-fluid" alt="">
+            </div>
+            <div class="member-info text-center">
+              <h4>Mari-Flor A. Dollaga - Libang</h4>
+              <span>Regional Director</span>
+            </div>
+          </div><!-- End Team Member -->
+          <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="300">
+            <div class="member-img">
+              <img src="{% static 'landingpage/assets/img/Officials/ardo.png' %}" class="img-fluid" alt="">
+            </div>
+            <div class="member-info text-center">
+              <h4>Jean Paul S. Parajes</h4>
+              <span>Assistant Regional Director for Operation</span>
+            </div>
+          </div><!-- End Team Member -->
+        </div>
+        <br>
+
+        <section id="features" class="features section-bg">
+          <div class="container" data-aos="fade-up">
+
+            <ul class="nav nav-tabs row  g-2 d-flex">
+    
+              <li class="nav-item col-6">
+                <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#tab-1">
+                  <h4>Directory of Officials</h4>
+                </a>
+              </li><!-- End tab nav item -->
+    
+              <li class="nav-item col-6">
+                <a class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-2">
+                  <h4>SWAD Team Leaders and CIS Satellite Offices</h4>
+                </a><!-- End tab nav item -->
+    
+    
+            </ul>
+    
+            <div class="tab-content">
+    
+              <div class="tab-pane active show" id="tab-1">
+                <div class="row">
+                  <div class="col-lg-12 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100">
+                    <h3>Directory List</h3>
+                    <table class="table table-sm table-bordered table-hover w-100" id="post-data">
+                      <thead>
+                          <th style="width:100px;">Details</th>
+                          <th class="text-center">Name</th>
+                          <th class="text-center">Position</th>
+                          <th class="text-center">Email</th>
+                          <th class="text-center">Location</th>
+                      </thead>
+                    </table>
+                  </div>
+                </div>
+              </div><!-- End tab content item -->
+              <div class="tab-pane" id="tab-2">
+                <div class="row">
+                  <div class="col-lg-12 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center">
+                    <h3>SWAD List</h3>
+                    <table class="table table-sm table-bordered table-hover w-100" id="swad">
+                      <thead>
+                          <th class="text-center" style="width:100%;">SWAD TEAM</th>
+                          <th class="text-center" style="width:250px;">ADDRESS</th>
+                          <th class="text-center" style="width:50px;">CONTACT NO</th>
+                      </thead>
+                    </table>
+                  </div>
+                </div>
+              </div><!-- End tab content item -->
+            </div>
+          </div>
+        </section>
+        {% comment %} <h5>Directory of Officials</h5>
+        <div class="card" id="created_post_data">
+          <div class="card-body" >
+
+        </div> {% endcomment %}
+      </div>
+      </div>
+    </section>
+    <div class="modal fade" id="editDirectory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              {% csrf_token %}
+              <div class="modal-body" id="load_data">
+              </div>
+          </div>
+      </div>
+  </div>
+    <!-- ======= Testimonials Section ======= -->
+    <section id="review" class="testimonials section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-header">
+          <h2>FEEDBACKS</h2>
+          <p>This is all the feedbacks in DSWD Caraga region</p>
+        </div>
+
+        <div class="slides-2 swiper">
+          <div class="swiper-wrapper">
+            {% for row in feedback%}
+            <div class="swiper-slide">
+              <div class="testimonial-wrap">
+                <div class="testimonial-item">
+                  {% if row.sex == 1 %}
+                  <img src="{% static 'landingpage/assets/img/boy.jpg' %}" class="testimonial-img" alt="">
+                  {% else %}
+                  <img src="{% static 'landingpage/assets/img/girly.png' %}" class="testimonial-img" alt="">
+                  {% endif %}
+                  <h3>To: <u>{{row.subject}}</u></h3>
+                  <h4>Anonymous</h4>
+                  {% if row.mood == "Worried" %}
+                  <div class="stars">
+                    <label class="emoji emoji-1" for='mood-1'>😟</label>
+                  </div>
+                  {% elif row.mood == "Sad" %}
+                  <div class="stars">
+                    <label class="emoji emoji-2" for='mood-2'>😡</label>
+                  </div>
+                  {% elif row.mood == "Confused" %}
+                  <div class="stars">
+                    <label class="emoji emoji-3" for='mood-3'>😔</label> 
+                  </div>
+                  {% elif row.mood == "Happy" %}
+                  <div class="stars">
+                    <label class="emoji emoji-4" for='mood-4'>😊</label>
+                  </div>
+                  {% elif row.mood == "Joyful" %}
+                  <div class="stars">
+                    <label class="emoji emoji-5" for='mood-5'>😂</label>  
+                  </div>
+                  {% endif %}
+                  <p>
+                    <i class="bi bi-quote quote-icon-left"></i>
+                    {{row.message}}                  
+                    <i class="bi bi-quote quote-icon-right"></i>
+                  </p>
+                </div>
+              </div>
+            </div><!-- End testimonial item -->
+            {% endfor %}
+
+
+          <!-- End testimonial item -->
+            
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+
+      </div>
+    </section><!-- End Testimonials Section --> 
+
+  <footer id="footer" class="footer">
+
+    <div class="footer-content position-relative">
+      <div class="container">
+        <div class="row">
+
+          <div class="col-lg-4 col-md-6">
+            <div class="footer-info">
+              <h3>INFORMATION KIOSK</h3>
+              <p>
+                Developer: Allen Efren O. Hilado <br>
+                Brgy 6, Nasipit<br><br>
+                <strong>Phone:</strong> 09487418673<br>
+                <strong>Email:</strong> aeohilado@dswd.gov.ph<br>
+              </p>
+              <div class="social-links d-flex mt-3">
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-facebook"></i></a>
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-linkedin"></i></a>
+              </div>
+            </div>
+          </div><!-- End footer info column-->
+
+
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-legal text-center position-relative">
+      <div class="container">
+        <div class="copyright">
+          &copy; Copyright <strong><span>RICTMS</span></strong>. All Rights Reserved
+        </div>
+        <div class="credits">
+          Developed by: Allen Efren O. Hilado</a>
+        </div>
+      </div>
+    </div>
+
+  </footer>
+  <!-- End Footer -->
+
+  <a href="#" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'landingpage/assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'landingpage/assets/vendor/php-email-form/validate.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'landingpage/assets/js/main.js' %}"></script>
+
+
+  <script src="{% static 'assets/vendor/libs/jquery/jquery.js' %}"></script>
+  <script src="{% static 'js/sweet-alert/sweetalert2.all.min.js' %}"></script>
+
+  <script src="{% static 'js/datatable/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'js/datatable/datatables/datatable.custom.js' %}"></script>
+  <script>
+    function validationForm(){
+      var invalid = false;
+      $('.form-control').each(function() {
+          if (/<[a-z][\s\S]*>/i.test($(this).val())) {
+              $(this).addClass('is-invalid');
+              $(this).next('.invalid-feedback').html("The field cannot contain HTML tags.")
+              invalid = true;
+          }
+      });
+      return invalid;
+    }
+    $('#submitForm').on('submit', function(e){
+      e.preventDefault();
+      if (!validationForm()){
+          var form = new FormData(this);
+          Swal.fire({
+              title: "Are you sure",
+              text: "You want to post this?",
+              icon: "info",
+              showCancelButton: true,
+              confirmButtonText: "Yes",
+              allowOutsideClick: false,
+              showLoaderOnConfirm: true,
+              preConfirm: function (){
+                  return $.post({
+                      url: "{% url 'uploadFeedback' %}",
+                      data: form,
+                      success : function (response){
+                          if(!response.error){
+                              Swal.fire({
+                                  title: "Good job!",
+                                  html:  response.msg,
+                                  icon: "success",
+                                  allowOutsideClick: false,
+                              }).then((result) => {
+                                  if (result.isConfirmed){
+                                      location.reload()
+                                  }
+                              });
+                          } else {
+                              Swal.fire('Oops...', response.msg, 'warning');
+                          }
+                      },
+                      cache       : false,
+                      contentType : false,
+                      processData : false,
+                  });
+              },
+          });
+        }
+    });
+  </script>
+
+  <script>
+    $(document).ready(function(){
+        $('#post-data').DataTable({
+            'serverSide': true,
+            'processing': true,
+            'deferRender': true,
+            'lengthMenu': [ 10, 25, 50, 100 ],
+            'order': [[ 2, 'desc' ]],
+            'bDestroy': true,
+            'ajax': {
+                
+                'url': '/api/created_post/directoryviews/?format=datatables',
+                'type': 'GET',
+            },
+            'fnCreatedRow': function (row, data, index) {
+                $(row).attr('id', data['id']);
+            },
+            'columns': [
+                {'data': 'id',
+                    'render': function(data, type, row, meta) {
+                        return "<a href='javascript:void(0);' data-role='details' data-id='"+ row['id'] + "'>See Photo</a>"
+                    },
+                    'searchable': false,
+                    'sortable': false
+                },
+                {'data': 'name','className': 'text-center'},
+                {'data': 'position','className': 'text-center', 'searchable': false,'sortable': false},
+                {'data': 'email','className': 'text-center', 'searchable': false,'sortable': false},
+                {'data': 'information','className': 'text-center', 'searchable': false,'sortable': false},
+            ]
+        });
+    });
+
+    $(document).on('click','a[data-role=details]', function(){ // FOR MODAL SUMMARY
+      var id = $(this).data('id');
+      console.log('test', id)
+      $('#editDirectory').modal('show').find('#load_data').load('/create/modalViewingDirectoryList/' + $(this).data('id'));
+    });
+
+  $(document).on('click','a[data-role=details]', function(){ // FOR MODAL SUMMARY
+      var id = $(this).data('id');
+      console.log(id)
+      $('#editDirectory').modal('show').find('#load_data').load('/create/modalForDirectoryList/' + $(this).data('id'));
+  });
+
+  $('#swad').DataTable({
+    'serverSide': true,
+    'processing': true,
+    'deferRender': true,
+    'lengthMenu': [ 10, 25, 50, 100 ],
+    'order': [[ 2, 'desc' ]],
+    'bDestroy': true,
+    'ajax': {
+        
+        'url': '/api/created_post/directoryswadviews/?format=datatables',
+        'type': 'GET',
+    },
+    'fnCreatedRow': function (row, data, index) {
+        $(row).attr('id', data['id']);
+    },
+    'columns': [
+        {'data': 'swad_team','className': 'text-center'},
+        {'data': 'address','className': 'text-center', 'searchable': false,'sortable': false},
+        {'data': 'contact_no','className': 'text-center', 'searchable': false,'sortable': false},
+    ]
+});
+</script>
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+{% extends 'layout.html' %}
+{% block content %}
+<div class="container-fluid">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-6">
+                <h3>Data List</h3>
+            </div>
+            <div class="col-6">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item">User</li>
+                    <li class="breadcrumb-item active">Transaction</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card" id="created_post_data">
+                <div class="card-body" >
+                    <br><br>
+                    <table class="table table-sm table-bordered table-hover w-100" id="post-data">
+                        <thead>
+                            <th>Action</th>
+                            <th class="text-center">Subject</th>
+                            <th class="text-center">Message</th>
+                            <th class="text-center">Mood</th>
+                            <th class="text-center">Sex</th>
+                            <th class="text-center">Date Created</th>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+{% block script %}
+<script for="init">
+    $(document).ready(function(){
+        $('#post-data').DataTable({
+            'serverSide': true,
+            'processing': true,
+            'deferRender': true,
+            'lengthMenu': [ 10, 25, 50, 100 ],
+            'order': [[ 1, 'desc' ]],
+            'bDestroy': true,
+            'ajax': {
+                
+                'url': '/api/created_post/feedbackviews/?format=datatables',
+                'type': 'GET',
+            },
+            'fnCreatedRow': function (row, data, index) {
+                $(row).attr('id', data['id']);
+            },
+            'columns': [
+                {'data': 'id',
+                    'render': function(data, type, row, meta) {
+                        return "<a href='javascript:void(0);' data-role='delete' data-id='"+ row['id'] + "'>Delete</a>"
+                    },
+                    'searchable': false,
+                    'sortable': false
+                },
+                {'data': 'subject','className': 'text-center'},
+                {'data': 'message','className': 'text-center'},
+                {'data': 'mood',
+                    'render': function(data, type, row, meta) {
+                        if(data == "Joyful") {
+                            return '😂'
+                        }else if (data == "Sad") {
+                            return '😡'
+                        }
+                        else if (data == "Confused") {
+                            return '😔'
+                        }
+                        else if (data == "Worried") {
+                            return '😟'
+                        }
+                        else if (data == "Happy") {
+                            return '😊'
+                        }
+                        },
+                    'className': 'text-center',
+                    'searchable': false,
+                    'sortable': false
+                },
+                {'data': 'sex',
+                    'render': function(data, type, row, meta) {
+                        if(data == 1) {
+                            return 'Male'
+                        }else {
+                            return 'Female'
+                        }
+                    },
+                'className': 'text-center',
+                'searchable': false,
+                'sortable': false    
+                },
+                {'data': 'date_created','className': 'text-center'},
+
+            ]
+        });
+    });
+    $(document).on('click','a[data-role=direct]', function(){ // FOR MODAL SUMMARY
+        var id = $(this).data('id');
+        $('#monitoring').modal('show').find('#load_data').load('/patients/modal_monitoring/' +id);
+    });
+</script>
+<script>
+	$(document).on('click', 'a[data-role=delete]', function(){
+    var id = $(this).data('id');
+    Swal.fire({
+    title: "Are you sure",
+    text: "You want to delete this feedback?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3498DB",
+    confirmButtonText: "Yes",
+    allowOutsideClick: false,
+  }).then((result) => {
+      if (result.isConfirmed) {
+          Swal.showLoading()
+      $.ajax({
+        url: "{% url 'deletefeedback' %}",
+        data: {
+          id: id
+        },
+        type: "POST"
+      })
+      .done(function(data){
+        if (data.data == 'success'){
+          Swal.fire({
+            title: "Good job!",
+            text: "You successfully deleted the posted data",
+            icon: "success",
+            confirmButtonColor: "#3498DB",
+            allowOutsideClick: false,
+          }).then((result) => {
+              if (result.isConfirmed) {
+                $('#post-data').DataTable().ajax.reload();
+              }
+          });
+        }
+      });
+    }
+  });
+  });
+</script>
+{% endblock %}

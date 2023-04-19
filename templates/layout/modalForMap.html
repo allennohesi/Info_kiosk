@@ -1,0 +1,10 @@
+<div class="row mb-3"id="modal_view">
+    <div class="card">
+        <div class="card-body">
+            <div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
+                <figure class="col-sm-12" itemprop="associatedMedia" itemscope=""><a href="{{location_data.photo.url}}" itemprop="contentUrl" target="_blank" data-size="1600x950"><img class="img-fluid rounded" src="{% if location_data.photo.url %}{{location_data.photo.url}}{% else %}{{created_post.photo.url}}{% endif %}" itemprop="thumbnail" alt="gallery" width="100%"></a>
+                </figure>
+            </div>
+        </div>
+    </div>
+</div>

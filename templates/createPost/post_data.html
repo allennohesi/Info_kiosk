@@ -1,0 +1,337 @@
+{% load static %}
+<div class="col-sm-12">
+  <div class="user-profile">
+    <div class="row">
+      <!-- user profile first-style start-->
+      <div class="col-sm-12">
+        <div class="card hovercard text-center">
+          <div class="user-image">
+            <div class="avatar"><img alt="" src="{% if template_profile.profile_pict.url %}{{template_profile.profile_pict.url}}{% else %}{{information.photo.url}}{% endif %}"></div>
+            <form id="submitForActionForm">
+              {% csrf_token %}
+              <label for="file">
+                <div class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div>
+                <input id="file" type="file" name="file"  accept="image/png, image/jpeg" style="display: none;">
+              </label>
+              <input type="text" name="postID" value="{{information.id}}" hidden>
+            </form>
+          </div>
+          <div class="info">
+            <div class="row">
+              <div class="col-sm-6 col-lg-4 order-sm-1 order-xl-0">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="ttl-info text-start">
+                      <h6><i class="fa fa-envelope"></i>Title: </h6><span>{{information.title}}</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="ttl-info text-start">
+                      <h6><i class="fa fa-calendar"></i>Date Created</h6><span>{{information.date_created}}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-12 col-lg-4 order-sm-0 order-xl-1">
+                <div class="user-designation">
+                  <div class="title"><a target="_blank" href="">{{information.created_by.get_fullname}}</a></div>
+                  <div class="desc">Created by</div>
+                </div>
+              </div>
+              <div class="col-sm-6 col-lg-4 order-sm-2 order-xl-2">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="ttl-info text-start">
+                      <h6><i class="fa fa-phone"></i>Email</h6><span>{{information.created_by.email}}</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="ttl-info text-start">
+                      <h6><i class="fa fa-location-arrow"></i>Url</h6><span>{% if information.created_by.url %}{{information.created_by.url}}{% else %} No URL {% endif %}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="social-media">
+              <ul class="list-inline">
+                <li class="list-inline-item"><a href='#' data-role='modal' data-id="{{information.id}}"><i class="fa fa-globe"></i></a></li>
+                <li class="list-inline-item"><a href="#" data-role='myInformation' data-id="{{information.id}}"><i class="fa fa-info-circle"></i></a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- user profile first-style end-->
+      <!-- user profile second-style start-->
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="profile-img-style">
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="media"><img class="img-thumbnail me-3" src="{% if template_profile.profile_pict.url %}{{template_profile.profile_pict.url}}{% else %}{{information.photo.url}}{% endif %}" alt="Generic placeholder image">  
+                  <div class="media-body align-self-center">
+                    <h5 class="mt-0 user-name">{{information.created_by.get_fullname}}</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4 align-self-center">
+                <div class="float-sm-end"><small>Online</small></div>
+              </div>
+            </div>
+            <hr>
+            <form id="submitPost">
+              <div class="alert alert-primary" role="alert">
+                Please do not capitalized the value in Tab-Title, and do not use a number as First Value.
+              </div>
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Tab-Title</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" name="title_post" placeholder="One Word" onkeypress="return event.charCode != 32" required>
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Title of Attachment</label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" name="title" placeholder="Title of Attachment" required>
+              </div>
+              <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Description of post</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" name="description_post" rows="3" placeholder="Description" required></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="formFileSm" class="form-label">Upload File</label>
+                <input class="form-control form-control-sm" id="formFileSm" type="file" name="upload" required>
+              </div>
+              <button class="btn btn-primary" type="submit">Upload</button>
+            </form>
+          </div>
+        </div>
+        <hr>
+      </div>
+      <!-- user profile second-style end-->
+      <!-- user profile third-style start-->
+      {% for row in data %}
+      <div class="col-sm-12">
+        <div class="card">
+          <div class="profile-img-style">
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="media"><img class="img-thumbnail me-3" src="{% if template_profile.profile_pict.url %}{{template_profile.profile_pict.url}}{% else %}{{information.photo.url}}{% endif %}" alt="Generic placeholder image">
+                  <div class="media-body align-self-center">
+                    <h5 class="mt-0 user-name">{{row.user.get_fullname}}</h5>
+                    <small>Posted: {{ row.date_created | timesince }}</small>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-4 align-self-center">
+                <div class="float-sm-end"><small><a href='#' data-role='delete' data-id='{{row.id}}'>Delete</a></small></div>
+              </div>
+            </div>
+            <hr>
+            <div class="mb-3">
+              <label for="exampleFormControlInput1" class="form-label">Title of post</label>
+              <h6>{{row.title_post}}</h6>
+            </div>
+            <div class="mb-3">
+              <label for="exampleFormControlTextarea1" class="form-label">Description of post</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" name="description_post" rows="3">{{row.description_post}}</textarea>
+            </div>
+            {% if row.file_ext == ".mp4"  %}
+            <video class="col-sm-12" controls src="{{row.file_upload.url}}" style="width:100%; height:450px;"></video>
+            {% elif row.file_ext == ".pdf" %}
+            <iframe src="{{row.file_upload.url}}" width="100%" height="1000px" frameborder="0" style="border:1px solid #CCC;"></iframe>
+            {% else %}
+            <div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
+              <figure class="col-sm-12" itemprop="associatedMedia" itemscope=""><a href="{{row.file_upload.url}}" itemprop="contentUrl" target="_blank" data-size="1200x950"><img class="img-fluid rounded" src="{{row.file_upload.url}}" itemprop="thumbnail" alt="gallery" width="500px"></a>
+              </figure>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <hr>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            {% csrf_token %}
+            <div class="modal-body" id="load_data">
+            </div>
+        </div>
+    </div>
+  </div>
+  <div class="modal fade" id="myInformation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            {% csrf_token %}
+            <div class="modal-body" id="load_data">
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+{% block script %}
+<script>;
+    $(document).ready(function(){
+        $('.select').select2({
+            width: '100%',
+            placeholder: 'CHOOSE',
+            containerCssClass: 'select'
+        });
+        var select2options = {
+            width: "100%",
+            containerCssClass: 'select',
+            placeholder: 'Choose',
+        }
+        function validationForm(){
+            var invalid = false;
+            $('.form-control').each(function() {
+                if (/<[a-z][\s\S]*>/i.test($(this).val())) {
+                    $(this).addClass('is-invalid');
+                    $(this).next('.invalid-feedback').html("The field cannot contain HTML tags.")
+                    invalid = true;
+                }
+            });
+            return invalid;
+        }
+        $('#submitPost').on('submit', function(e){
+            e.preventDefault();
+            var form = new FormData(this);
+            if (!validationForm()){
+                Swal.fire({
+                    title: "Are you sure",
+                    text: "You want to upload this data?",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes",
+                    allowOutsideClick: false,
+                    showLoaderOnConfirm: true,
+                    preConfirm: function (){
+                        return $.post({
+                            url: "{% url 'post_data' information.id %}",
+                            data: form,
+                            success : function (response){
+                                if(!response.error){
+                                    Swal.fire({
+                                        title: response.tracking_number,
+                                        html:  response.msg,
+                                        icon: "success",
+                                        allowOutsideClick: false,
+                                    }).then((result) => {
+                                        if (result.isConfirmed){
+                                          $('#created_post_data').load('/create/post_data/{{information.id}}');
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire("Oops...", response.msg, "warning");
+                                }
+                            },
+                            cache       : false,
+                            contentType : false,
+                            processData : false,
+                        });
+                    },
+                });
+            }
+        });
+    });
+
+    $('#file').change(function() {
+        $('#submitForActionForm').submit();
+    });
+    $('#submitForActionForm').on('submit', function(e){
+      e.preventDefault();
+      var form = new FormData(this);
+      if (!validationForm()){
+          Swal.fire({
+              title: "Are you sure",
+              text: "You want to upload picture?",
+              icon: "info",
+              showCancelButton: true,
+              confirmButtonText: "Yes",
+              allowOutsideClick: false,
+              showLoaderOnConfirm: true,
+              preConfirm: function (){
+                  return $.post({
+                      url: "{% url 'upload_picture' %}",
+                      data: form,
+                      success : function (response){
+                          if(!response.error){
+                              Swal.fire({
+                                  title: "Good job!",
+                                  html:  response.msg,
+                                  icon: "success",
+                                  allowOutsideClick: false,
+                              }).then((result) => {
+                                  if (result.isConfirmed){
+                                    $('#created_post_data').load('/create/post_data/{{information.id}}');
+                                  }
+                              });
+                          } else {
+                              Swal.fire('Oops...', response.msg, 'warning');
+                          }
+                      },
+                      cache       : false,
+                      contentType : false,
+                      processData : false,
+                  });
+              },
+          });
+      }
+    });
+</script>
+<script>
+  $(document).on('click','a[data-role=modal]', function(){
+    var id = $(this).data('id');
+    $('#modal').modal('show').find('#load_data').load('/create/modalForMap/' +id);
+});
+</script>
+<script>
+  $(document).on('click','a[data-role=myInformation]', function(){
+    var id = $(this).data('id');
+    $('#myInformation').modal('show').find('#load_data').load('/create/modalForLocation/' +id);
+});
+</script>
+<script>
+	$(document).on('click', 'a[data-role=delete]', function(){
+    var id = $(this).data('id');
+    Swal.fire({
+    title: "Are you sure",
+    text: "You want to delete this posted data?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3498DB",
+    confirmButtonText: "Yes",
+    allowOutsideClick: false,
+  }).then((result) => {
+      if (result.isConfirmed) {
+          Swal.showLoading()
+      $.ajax({
+        url: "{% url 'deletePostedData' %}",
+        data: {
+          id: id
+        },
+        type: "POST"
+      })
+      .done(function(data){
+        if (data.data == 'success'){
+          Swal.fire({
+            title: "Good job!",
+            text: "You successfully deleted the posted data",
+            icon: "success",
+            confirmButtonColor: "#3498DB",
+            allowOutsideClick: false,
+          }).then((result) => {
+              if (result.isConfirmed) {
+                $('#created_post_data').load('/create/post_data/{{information.id}}');
+              }
+          });
+        }
+      });
+    }
+  });
+  });
+</script>
+{% endblock %}

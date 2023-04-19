@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html>
+{% load static %}
+{% load tags %}
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>KIOSK</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'images/logo/logo.png' %}" type="image/x-icon" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    
+    <link rel="stylesheet" href="{% static 'assets/vendor/fonts/boxicons.css' %}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/css/core.css' %}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{% static 'assets/vendor/css/theme-default.css' %}" class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{% static 'assets/css/demo.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/vendors/bootstrap.css' %}" />
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{% static 'assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css' %}" />
+
+    <!-- Page CSS -->
+
+    <!-- Helpers -->
+    <script src="{% static 'assets/vendor/js/helpers.js' %}"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="{% static 'assets/js/config.js' %}"></script>
+  </head>
+  <style>
+    
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+    body {
+      font-family: Inter;
+    }
+    .radio
+    {
+        display: none;
+    }
+    .emoji
+    {
+        font-size: 40px;
+        padding: 5px 10px;
+        cursor: pointer;
+        display: inline-block;
+    }
+    #mood-1:checked ~ .emoji-1,
+    #mood-2:checked ~ .emoji-2,
+    #mood-3:checked ~ .emoji-3,
+    #mood-4:checked ~ .emoji-4,
+    #mood-5:checked ~ .emoji-5
+    {
+        background-color: #E5E4E2;
+    }
+    </style>
+  <body>
+    <!-- Layout wrapper -->
+    <div class="layout-wrapper layout-content-navbar">
+      <div class="layout-container">
+        <!-- Menu -->
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+          <!-- Navbar -->
+
+          <!-- / Navbar -->
+
+          <!-- Content wrapper -->
+          <div class="content-wrapper">
+            <!-- Content -->
+
+            <div class="container-xxl flex-grow-1 container-p-y">
+              <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">DSWD /</span> Information Kiosk </h4> 
+              <div class="row mb-5">
+                {% for row in data %}
+                <div class="col-md-6 col-lg-4 mb-3">
+                  <div class="card h-100">
+                    {% if row.get_pict.url %}
+                    <img class="card-img-top" src="{{row.get_pict.url}}" alt="Card image cap" width="40" height="200" style="object-fit: cover;"/>
+                    {% else %}
+                    <img class="card-img-top" src="{{row.photo.url}}" alt="Card image cap" width="40" height="200" />
+                    {% endif %}
+                    <hr>
+                    <div class="card-body">
+                      <h5 class="card-title"><strong>{{row.title}}</strong></h5>
+                      <p class="card-text">
+                        {{row.remarks}}
+                      </p>
+                      {% if row.url == None %}
+                      <a href="{% url 'indexData' row.id %}" class="btn btn-outline-primary"><i class='bx bxs-select-multiple'></i></a>
+                      {% else %}
+                      <a href="{{row.url}}" target="_blank" class="btn btn-outline-primary"><i class='bx bxs-select-multiple'></i></a>
+                      {% endif %}
+                      <a href='#' data-role='modal' data-id="{{row.id}}" class="btn btn-outline-primary"><i class='bx bx-current-location'></i></a>
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+              <!-- Examples -->
+              <!-- Content types -->
+              <div class="row mb-5">
+                <div class="col-md-12 col-lg-12">
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3941.305086676114!2d125.53317140580168!3d8.944008937116951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3301c04fea75abc9%3A0xc04cf3f7a098d4e7!2sDepartment%20of%20Social%20Welfare%20and%20Development%20(DSWD)%20-%20Field%20Office%20Caraga!5e0!3m2!1sen!2sph!4v1678339955781!5m2!1sen!2sph" width="100%" height="750" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5 col-lg-5">
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <div class="address">
+                        <h4><i class='bx bxs-location-plus'></i> Location:</h4>
+                        <p>R. Palma St. Butuan City 8600</p>
+                      </div>
+                      <div class="address">
+                        <h4><i class='bx bxs-envelope'></i> Email:</h4>
+                        <p>aeohilado@dswd.gov.ph</p>
+                      </div>
+                      <div class="phone">
+                        <h4><i class='bx bxs-phone-call'></i> Call:</h4>
+                        <p>(085) 303 8620 loc 114</p>
+                      </div>
+                      <div class="address">
+                        <h4><i class='bx bxs-contact' ></i> Developer Contact:</h4>
+                        <p>09487418673</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-7 col-lg-7">
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <div class="address">
+                        <h4><i class='bx bx-chat'></i> Feedback:</h4>
+                        <form id="">
+                          <div class="form-group mb-3">
+                            <label>Subject<span class="txt-danger">*</span></label>
+                            <input type="text" class="form-control" id="title" name="title_post" autocomplete="off" required>
+                            <div class="invalid-feedback"></div>
+                          </div>
+                          <div class="form-group mb-3">
+                              <label for="Remarks" class="form-label">Remarks</label>
+                              <textarea class="form-control" id="Remarks" name='remarks' rows="2"></textarea>
+                          </div>
+                          <div class="row mb-3">
+                              <div class="col-md-12">
+                                  <div class="form-group">
+                                      <label>You feeling</label>
+                                      <input type="radio" id="mood-1" name="mood" value='Worried' class="radio" checked>
+                                      <label class="emoji emoji-1" for='mood-1'>😟</label>
+                                          
+                                      <input type="radio" id="mood-2" name="mood" value='Sad' class="radio">
+                                      <label class="emoji emoji-2" for='mood-2'>😡</label>  
+                                          
+                                      <input type="radio" id="mood-3" name="mood" value='Confused' class="radio">
+                                      <label class="emoji emoji-3" for='mood-3'>😔</label>  
+                                        
+                                      <input type="radio" id="mood-4" name="mood" value='Happy' class="radio">
+                                      <label class="emoji emoji-4" for='mood-4'>😊</label>
+                                          
+                                      <input type="radio" id="mood-5" name="mood" value='Joyful' class="radio">
+                                      <label class="emoji emoji-5" for='mood-5'>😂</label>     
+                                  </div>
+                              </div>
+                          </div>
+                          <button class="btn btn-light" type="submit">Save changes</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row mb-5">
+                <div class="col-md-12 col-lg-12">
+                  <div class="card mb-4">
+                    <div class="card-body">
+                        <a class="twitter-timeline" href="https://twitter.com/dswdcaraga?ref_src=twsrc%5Etfw" data-height="1000">Tweets by dswdcaraga</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <h5 class="pb-1 mb-4">DSWD DETAILS</h5>
+              <div class="row mb-5">
+                <div class="col-md-12 col-lg-12">
+                  <div class="card mb-4">
+                    <div class="card-body">
+                      <p class="card-text">
+                        This is some text within a card body. Jelly lemon drops tiramisu chocolate cake cotton candy
+                        soufflé oat cake sweet roll. Sugar plum marzipan dragée topping cheesecake chocolate bar. Danish
+                        muffin icing donut.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!--/ Card layout -->
+            </div>
+            <!-- / Content -->
+            <div class="content-backdrop fade"></div>
+          </div>
+          <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+      </div>
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
+      <div class="modal fade bd-example-modal-xl" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                {% csrf_token %}
+                <div class="modal-body" id="load_data">
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+    <!-- / Layout wrapper -->
+
+
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="{% static 'assets/vendor/libs/jquery/jquery.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/popper/popper.js' %}"></script>
+    <script src="{% static 'assets/vendor/js/bootstrap.js' %}"></script>
+    <script src="{% static 'assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js' %}"></script>
+
+    <script src="{% static 'assets/vendor/js/menu.js' %}"></script>
+    <!-- endbuild -->
+
+    <!-- Vendors JS -->
+    <script src="{% static 'assets/vendor/libs/masonry/masonry.js' %}"></script>
+
+    <!-- Main JS -->
+    <script src="{% static 'assets/js/main.js' %}"></script>
+
+    <!-- Page JS -->
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+    <script>
+      $(document).on('click','a[data-role=modal]', function(){
+        var id = $(this).data('id');
+        console.log(id)
+        $('#modal').modal('show').find('#load_data').load('/modalforData/' +id);
+    });
+    </script>
+  </body>
+</html>
