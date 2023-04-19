@@ -1,0 +1,66 @@
+<div class="row mb-3"id="modal_view">
+    <div class="card">
+        <form id="submitForActionForm">
+            {% csrf_token %}
+            <label for="file">
+              <div class="icon-wrapper"><i class="icofont icofont-pencil-alt-5"></i></div>
+              <input id="file" type="file" name="file"  accept="image/png, image/jpeg" style="display: none;">
+            </label>
+            <input type="text" name="postID" value="{{information.id}}" hidden>
+        </form>
+        <div class="card-body">
+            {% if location_data %}
+            <div class="row mt-4 pictures my-gallery" id="aniimated-thumbnials-2" itemscope="">
+                <figure class="col-sm-12" itemprop="associatedMedia" itemscope=""><a href="{{row.file_upload.url}}" itemprop="contentUrl" target="_blank" data-size="1600x950"><img class="img-fluid rounded" src="{{location_data.photo.url}}" itemprop="thumbnail" alt="gallery" width="100%"></a>
+                </figure>
+            </div>
+            {% else %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script>
+    $('#FileLocation').change(function() {
+        $('#submitLocationPost').submit();
+    });
+    $('#submitLocationPost').on('submit', function(e){
+        e.preventDefault();
+        var form = new FormData(this);
+        if (!validationForm()){
+            Swal.fire({
+                title: "Are you sure",
+                text: "You want to upload picture of location?",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                allowOutsideClick: false,
+                showLoaderOnConfirm: true,
+                preConfirm: function (){
+                    return $.post({
+                        url: "{% url 'modalForMap' information.id %}",
+                        data: form,
+                        success : function (response){
+                            if(!response.error){
+                                Swal.fire({
+                                    title: "Good job!",
+                                    html:  response.msg,
+                                    icon: "success",
+                                    allowOutsideClick: false,
+                                }).then((result) => {
+                                    if (result.isConfirmed){
+                                      $('#modal_view').load('/create/modalForMap/{{ information.id }}');
+                                    }
+                                });
+                            } else {
+                                Swal.fire('Oops...', response.msg, 'warning');
+                            }
+                        },
+                        cache       : false,
+                        contentType : false,
+                        processData : false,
+                    });
+                },
+            });
+        }
+      });
+</script>

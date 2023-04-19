@@ -1,0 +1,113 @@
+<div class="row mb-3"id="modal_view">
+    <div class="card">
+        <form id="submitLocationPost">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="exampleFormControlInput1" class="form-label">Location<span class="txt-danger">*</span></label>
+                <input type="text" class="form-control" id="exampleFormControlInput1" name="requirements" placeholder="Requirements" required>
+            </div>
+            <button class="btn btn-primary" type="submit">Upload</button>
+        </form>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Created By</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in requirements %}
+                    <tr>
+                        <th><a href='#' data-role='remove' data-id='{{row.id}}'>Remove</a></th>
+                        <td>{{row.location}}</td>
+                        <td>{{row.user.get_fullname}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+    </div>
+</div>
+<script>
+    $('#FileLocation').change(function() {
+        $('#submitLocationPost').submit();
+    });
+    $('#submitLocationPost').on('submit', function(e){
+        e.preventDefault();
+        var form = new FormData(this);
+        if (!validationForm()){
+            Swal.fire({
+                title: "Are you sure",
+                text: "You want to upload picture of location?",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                allowOutsideClick: false,
+                showLoaderOnConfirm: true,
+                preConfirm: function (){
+                    return $.post({
+                        url: "{% url 'modalForRequirements' information.id %}",
+                        data: form,
+                        success : function (response){
+                            if(!response.error){
+                                Swal.fire({
+                                    title: "Good job!",
+                                    html:  response.msg,
+                                    icon: "success",
+                                    allowOutsideClick: false,
+                                }).then((result) => {
+                                    if (result.isConfirmed){
+                                      $('#modal_view').load('/create/modalForLocation/{{ information.id }}');
+                                    }
+                                });
+                            } else {
+                                Swal.fire('Oops...', response.msg, 'warning');
+                            }
+                        },
+                        cache       : false,
+                        contentType : false,
+                        processData : false,
+                    });
+                },
+            });
+        }
+      });
+	$(document).on('click', 'a[data-role=remove]', function(){
+    	var id = $(this).data('id');
+    	Swal.fire({
+		  title: "Are you sure",
+          text: "You want to remove this Requirements?",
+		  icon: "warning",
+		  showCancelButton: true,
+		  confirmButtonColor: "#3498DB",
+		  confirmButtonText: "Yes",
+		  allowOutsideClick: false,
+		}).then((result) => {
+		    if (result.isConfirmed) {
+		        Swal.showLoading()
+				$.ajax({
+					url: "{% url 'removeLocation' %}",
+					data: {
+						id: id
+					},
+					type: "POST"
+				})
+				.done(function(data){
+					if (data.data == 'success'){
+						Swal.fire({
+						  title: "Good job!",
+						  text: "Requirements has been removed",
+						  icon: "success",
+						  confirmButtonColor: "#3498DB",
+						  allowOutsideClick: false,
+						}).then((result) => {
+		    				if (result.isConfirmed) {
+                                $('#modal_view').load('/create/modalForLocation/{{ information.id }}');
+						  	}
+						});
+					}
+				});
+			}
+		});
+    });
+</script>

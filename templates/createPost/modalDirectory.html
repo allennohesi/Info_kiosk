@@ -1,0 +1,154 @@
+{% load tags %}
+<div class="row mb-3"id="modal_view">
+    {% if dataPicture %}
+    <figure class="col-sm-12" itemprop="associatedMedia" itemscope=""><img class="img-fluid rounded" src="{{dataPicture.photo.url}}" itemprop="thumbnail" alt="gallery" width="100%">
+    </figure>
+    {% endif %}
+    <form id="SubmitPicture">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="formFileSm" class="form-label">Upload Picture</label>
+            <input class="form-control form-control-sm" id="pictureDirectory" type="file" name="photo">
+        </div>
+    </form>
+    <div class="modal-body">
+        <form id="submitEditForm">
+            {% csrf_token %}
+            <div class="form-group mb-3">
+                <label>Name<span class="txt-danger">*</span></label>
+                <input type="text" class="form-control" id="first_name" name="first_name" value="{{data.name}}" autocomplete="off" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group mb-3">
+                <label>Position <span class="txt-danger">*</span></label>
+                <input type="text" class="form-control" id="last_name" name="last_name" value="{{data.position}}" autocomplete="off" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group mb-3">
+                <label>Email <span class="txt-danger">*</span></label>
+                <input type="email" class="form-control" id="email" name="email" value="{{data.email}}" autocomplete="off" required>
+                <div class="invalid-feedback"></div>
+            </div>
+            <div class="form-group mb-3">
+                <label>Information <span class="txt-danger">*</span></label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" name="Information" rows="3" placeholder="" required>{{data.information}}</textarea>
+                <div class="invalid-feedback"></div>
+            </div>
+            <button class="btn btn-primary" type="submit">Save changes</button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function(){
+
+        function validationForm(){
+            var invalid = false;
+            $('.form-control').each(function() {
+                if (/<[a-z][\s\S]*>/i.test($(this).val())) {
+                    $(this).addClass('is-invalid');
+                    $(this).next('.invalid-feedback').html("The field cannot contain HTML tags.")
+                    invalid = true;
+                }
+            });
+            return invalid;
+        }
+
+        function clearValidation(){
+            $('.form-control').each(function() {
+                $(this).removeClass('is-invalid');
+                $(this).next('.invalid-feedback').html("");
+            });
+        }
+
+        $('#submitEditForm').on('submit', function(e){
+            e.preventDefault();
+            if (!validationForm()){
+                var form = new FormData(this);
+                Swal.fire({
+                    title: "Are you sure",
+                    text: "You want to register this new user?",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes",
+                    allowOutsideClick: false,
+                    showLoaderOnConfirm: true,
+                    preConfirm: function (){
+                        return $.post({
+                            url: "{% url 'edit' user.id %}",
+                            data: form,
+                            success : function (response){
+                                if(!response.error){
+                                    Swal.fire({
+                                        title: "Good job!",
+                                        html:  response.msg,
+                                        icon: "success",
+                                        allowOutsideClick: false,
+                                    }).then((result) => {
+                                        if (result.isConfirmed){
+                                            $('#submitEditForm').trigger('reset');
+                                            $('#user-table').DataTable().ajax.reload();
+                                            clearValidation();
+                                            $('#edit-user-modal').modal('hide');
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire('Oops...', response.msg, 'warning');
+                                }
+                            },
+                            cache       : false,
+                            contentType : false,
+                            processData : false,
+                        });
+                    },
+                });
+            }
+        });
+    });
+</script>
+<script>
+    $('#pictureDirectory').change(function() {
+        $('#SubmitPicture').submit();
+    });
+    $('#SubmitPicture').on('submit', function(e){
+        e.preventDefault();
+        var form = new FormData(this);
+        if (!validationForm()){
+            Swal.fire({
+                title: "Are you sure",
+                text: "You want to upload this picture?",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonText: "Yes",
+                allowOutsideClick: false,
+                showLoaderOnConfirm: true,
+                preConfirm: function (){
+                    return $.post({
+                        url: "{% url 'modalForDirectoryList' data.id %}",
+                        data: form,
+                        success : function (response){
+                            if(!response.error){
+                                Swal.fire({
+                                    title: "Good job!",
+                                    html:  response.msg,
+                                    icon: "success",
+                                    allowOutsideClick: false,
+                                }).then((result) => {
+                                    if (result.isConfirmed){
+                                      $('#modal_view').load('/create/modalForDirectoryList/{{ data.id }}');
+                                    }
+                                });
+                            } else {
+                                Swal.fire('Oops...', response.msg, 'warning');
+                            }
+                        },
+                        cache       : false,
+                        contentType : false,
+                        processData : false,
+                    });
+                },
+            });
+        }
+      });
+</script>
