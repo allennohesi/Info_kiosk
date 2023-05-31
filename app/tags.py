@@ -1,7 +1,11 @@
 from django import template
 from app.models import AuthUser, AuthUserGroups
-
+from datetime import datetime
+import os
+import requests
+currentMonth = datetime.now().month
 register = template.Library()
+today = datetime.now()
 
 @register.filter
 def check_group_permission(user, group_name):
@@ -17,3 +21,18 @@ def get_user_info(user_id):
 def get_user_role(user_id):
     return AuthUserGroups.objects.filter(user_id=user_id).first().group.name
 
+
+# @register.simple_tag
+# def getallData():
+    # vacancy = requests.get('https://caraga-iris-internal.dswd.gov.ph/api/vacancies/process/', headers={'Content-Type': 'application/json',
+    #                                     'Authorization': 'Token {}'.format('243f229926212da6b5170d5e604a038d28fec9f4')})
+
+    # current_month = today.strftime("%b")
+    # data_value = row['deadline_at']
+    # data_value.split(" ")[0]
+    # if current_month == data_value.split(" ")[0]:
+    #     values = row['position']+ " \n " + row['deadline_at'] 
+
+    #     print("------------------------",values)
+    #     return values
+    
