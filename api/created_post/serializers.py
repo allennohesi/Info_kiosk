@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from app.createPost.models import createdPost, createFeedback, createDirectory, createDirectorySwad
+from app.createPost.models import createdPost, createFeedback, createDirectory, createDirectorySwad, uploadfile
 
 
 class createdPostSerializer(serializers.ModelSerializer):
@@ -34,4 +34,11 @@ class createDirectorySwadSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = createDirectorySwad
+        fields = '__all__'
+
+class createdPostDataSerializer(serializers.ModelSerializer):
+    services_type = serializers.CharField(source='title.services_type', read_only=True)
+    title = serializers.CharField(source='title.title', read_only=True)
+    class Meta:
+        model = uploadfile
         fields = '__all__'

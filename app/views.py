@@ -4,10 +4,27 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from app.createPost.models import createdPost, uploadfile, upload_profile, location_picture, createFeedback
 from django.views.decorators.csrf import csrf_exempt
+import requests
+from django.core.paginator import Paginator
+import json
+from datetime import datetime
+import os
+currentMonth = datetime.now().month
+today = datetime.now()
 
 def landingpage(request):
+    # vacancy = requests.get('https://caraga-iris-internal.dswd.gov.ph/api/vacancies/process/', headers={'Content-Type': 'application/json',
+    #                                     'Authorization': 'Token {}'.format('243f229926212da6b5170d5e604a038d28fec9f4')})
+    
+    # # print(vacancy.json())
+    
+    # current = today.strftime('%B %d, %Y')
+
+
     context = {
-         'feedback': createFeedback.objects.all().order_by('-id')
+          'feedback': createFeedback.objects.all().order_by('-id'),
+        #   'value': vacancy.json(),
+        #   'current': current,
     }
     return render(request,'landingpage.html', context)
 
@@ -32,9 +49,6 @@ def FrontlineServices(request): #NON FRONTLINE SERVICES
 
 def NonFrontlineServices(request): #FRONTLINE SERVICES
     data = createdPost.objects.filter(services_type="Non-Frontline Services")
-    print("TEST")
-    for row in data:
-         print("TEST RANI",row.get_location)
     context = {
         'data':data,
     }
@@ -74,3 +88,23 @@ def uploadFeedback(request):
             sex=request.POST.get('sex'),
 		)
 		return JsonResponse({'msg': 'You successfully submitted your feedback'})
+
+def modalforpdfviewing(request,pk):
+      print("THIS IS TEST",pk)
+      data = uploadfile.objects.filter(id=pk).first()
+      context = {
+            'dataFiles': data
+      }
+      return render(request, 'pdfviewingmodal.html', context)
+
+def vacancies(request):
+    vacancy = requests.get('https://caraga-iris-internal.dswd.gov.ph/api/vacancies/process/', headers={'Content-Type': 'application/json',
+                                        'Authorization': 'Token {}'.format('243f229926212da6b5170d5e604a038d28fec9f4')})
+
+    current = today.strftime('%B %d, %Y')
+
+    context = {
+          'value': vacancy.json(),
+          'current': current,
+    }
+    return render(request, 'vacancies.html', context)

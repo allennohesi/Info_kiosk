@@ -78,16 +78,8 @@
           <li class="dropdown"><a href="#"><span>Services</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
             <ul>
               <li><a href="{% url 'FrontlineServices' %}">Frontline Services</a></li>
-              {% comment %} <li class="dropdown"><a href="#"><span>Deep Dropdown</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
-                <ul>
-                  <li><a href="#">Deep Dropdown 1</a></li>
-                  <li><a href="#">Deep Dropdown 2</a></li>
-                  <li><a href="#">Deep Dropdown 3</a></li>
-                  <li><a href="#">Deep Dropdown 4</a></li>
-                  <li><a href="#">Deep Dropdown 5</a></li>
-                </ul>
-              </li> {% endcomment %}
-              <li><a href="#">Non-Frontline Services</a></li>
+              <li><a href="{% url 'NonFrontlineServices' %}">Non-Frontline Services</a></li>
+              <li><a href="{% url 'vacancies' %}">Vacancies</a></li>
             </ul>
           </li>
         </ul>
@@ -135,7 +127,13 @@
 
     <section id="feedback" class="get-started section-bg">
       <div class="container">
+        {% comment %} <h1>Vacancy</h1>
+        {% for row in value %}
+        {% if row.deadline_at >= current %}
+          {{row.position|safe}}<br> {{row.deadline_at}} <br>
 
+        {% endif %}
+        {% endfor %} {% endcomment %}
         <div class="row justify-content-between gy-4">
 
           <div class="col-lg-7" data-aos="fade">
@@ -252,8 +250,6 @@
                 <a class="nav-link" data-bs-toggle="tab" data-bs-target="#tab-2">
                   <h4>SWAD Team Leaders and CIS Satellite Offices</h4>
                 </a><!-- End tab nav item -->
-    
-    
             </ul>
     
             <div class="tab-content">
@@ -302,12 +298,11 @@
     <div class="modal fade" id="editDirectory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog">
           <div class="modal-content">
-              {% csrf_token %}
               <div class="modal-body" id="load_data">
               </div>
           </div>
       </div>
-  </div>
+    </div>
     <!-- ======= Testimonials Section ======= -->
     <section id="review" class="testimonials section-bg">
       <div class="container" data-aos="fade-up">
@@ -316,10 +311,9 @@
           <h2>FEEDBACKS</h2>
           <p>This is all the feedbacks in DSWD Caraga region</p>
         </div>
-
         <div class="slides-2 swiper">
           <div class="swiper-wrapper">
-            {% for row in feedback%}
+            {% for row in feedback %}
             <div class="swiper-slide">
               <div class="testimonial-wrap">
                 <div class="testimonial-item">
@@ -370,6 +364,7 @@
 
       </div>
     </section><!-- End Testimonials Section --> 
+
 
   <footer id="footer" class="footer">
 
@@ -525,15 +520,14 @@
 
     $(document).on('click','a[data-role=details]', function(){ // FOR MODAL SUMMARY
       var id = $(this).data('id');
-      console.log('test', id)
       $('#editDirectory').modal('show').find('#load_data').load('/create/modalViewingDirectoryList/' + $(this).data('id'));
     });
 
-  $(document).on('click','a[data-role=details]', function(){ // FOR MODAL SUMMARY
+  {% comment %} $(document).on('click','a[data-role=details]', function(){ // FOR MODAL SUMMARY
       var id = $(this).data('id');
       console.log(id)
       $('#editDirectory').modal('show').find('#load_data').load('/create/modalForDirectoryList/' + $(this).data('id'));
-  });
+  }); {% endcomment %}
 
   $('#swad').DataTable({
     'serverSide': true,
