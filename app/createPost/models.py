@@ -14,6 +14,7 @@ class createdPost(models.Model):
     remarks = models.TextField()
     photo = models.FileField(upload_to='PROFILE/',default='PROFILE/nopicture1.jpg')
     services_type = models.CharField(max_length=255)
+    type = models.CharField(max_length=100)
 
     @property
     def get_pict(self):
@@ -147,3 +148,32 @@ class createDirectorySwad(models.Model):
     class Meta:
         managed = False
         db_table = 'create_directoryswad'
+
+#create IEC Material
+
+def get_videoFile(instance, filename):
+    ext = filename.split('.')[-1]
+    filename_start = filename.replace('.'+ext,'')
+    filename = "%s__%s.%s" % (uuid.uuid4(),filename_start, ext)
+    return os.path.join('Video_file', filename)
+
+class iecMaterial(models.Model):
+    title = models.CharField(max_length=255) #ForTabNameOnly
+    title_IECMaterial = models.CharField(max_length=255)
+    description = models.CharField(max_length=255)
+    video = models.FileField(upload_to=get_videoFile, verbose_name=(u'File'))
+    
+    class Meta:
+        managed = False
+        db_table = 'create_iecmaterial'
+
+class number_db(models.Model):
+    Date = models.CharField(max_length=255)
+    Number = models.CharField(max_length=255)
+    Lane = models.CharField(max_length=255, null=True)
+    Category = models.CharField(max_length=255)
+    TableNo = models.CharField(max_length=255)
+
+    class Meta:
+        managed = False
+        db_table = 'number_db'

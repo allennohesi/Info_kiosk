@@ -1,7 +1,8 @@
 from django.urls import path
 
 from .views import create_post, post_data, upload_picture, modalForMap, modalForLocation, removeLocation, deletePostedData, \
-                    create_directory, modalForDirectoryList, modalViewingDirectoryList, create_satelliteOffices
+                    create_directory, modalForDirectoryList, modalViewingDirectoryList, create_satelliteOffices, remove_information, \
+                    createIECMaterial
 
 urlpatterns = [
     path('post/', create_post, name='create_post'),
@@ -19,5 +20,8 @@ urlpatterns = [
 
     #SALLITEOFIFCES
     path('create_satelliteOffices/', create_satelliteOffices, name='create_satelliteOffices'),
+    path('remove_information', remove_information, name='remove_information'),
 
+    #IECMaterial
+    path('createIECMaterial', createIECMaterial, name='createIECMaterial')
 ]

@@ -119,6 +119,10 @@
                                     <li class="sidebar-list">
                                         <label class="badge badge-success"></label>
                                         <a class="sidebar-link sidebar-title link-nav" href="{% url 'create_satelliteOffices' %}"><i data-feather="airplay"></i><span>Add Satellite Offices</span></a>
+                                    </li>
+                                    <li class="sidebar-list">
+                                        <label class="badge badge-success"></label>
+                                        <a class="sidebar-link sidebar-title link-nav" href="{% url 'createIECMaterial' %}"><i data-feather="airplay"></i><span>Add IEC Material</span></a>
                                     </li>   
                                     {% endif %}
                                     {% if user|check_group_permission:"Information Officer" or user|check_group_permission:"Super Administrator" %}
