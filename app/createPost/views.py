@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from app.models import AuthUser
 from app.createPost.models import createdPost, uploadfile, upload_profile, location_picture, createLocation, createDirectory, createDirectoryPicture, \
-							createDirectorySwad
+							createDirectorySwad, iecMaterial
 import os
 from django.views.decorators.csrf import csrf_exempt
 
@@ -154,3 +154,29 @@ def create_satelliteOffices(request):
 		return JsonResponse({'msg': 'You successfully added Swad list'})
 	
 	return render(request, 'createPost/create_satelliteOffices.html')
+
+@csrf_exempt
+def remove_information(request):
+	if request.method == "POST":
+		print("test ", request.POST.get('id'))
+		createDirectorySwad.objects.filter(id=request.POST.get('id')).delete()
+	return JsonResponse({'data': 'success'})
+
+#create IEC Material
+
+@login_required
+def createIECMaterial(request):
+	if request.method == "POST":
+		create_post = iecMaterial.objects.create(
+			title=request.POST.get('title'),#ForTabNameOnly
+			title_IECMaterial=request.POST.get('title_IECMaterial'),
+			description=request.POST.get('description'),
+			video=request.FILES.get('file')
+		)
+		return JsonResponse({'msg': 'You successfully added IEC Material'})
+	
+	context = {
+		'files': iecMaterial.objects.all(),
+		
+	}
+	return render(request, 'createPost/create_IECmaterial.html', context)
