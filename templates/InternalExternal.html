@@ -156,6 +156,72 @@
           </div><!-- End tab content item -->
         </div>
       </div>
+
+    </section>
+    <section id="services-cards" class="services-cards">
+      <div class="container" data-aos="fade-up">
+
+        <div class="row justify-content-between gy-4">
+
+          <div class="col-lg-7" data-aos="fade">
+            <form action="forms/quote.php" method="post" class="php-email-form">
+              <h3>DSWD FO Caraga address</h3>
+              <p>Location: R. Palma St. Butuan City 8600</p>
+              <div class="row gy-3">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3941.305086676114!2d125.53317140580168!3d8.944008937116951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3301c04fea75abc9%3A0xc04cf3f7a098d4e7!2sDepartment%20of%20Social%20Welfare%20and%20Development%20(DSWD)%20-%20Field%20Office%20Caraga!5e0!3m2!1sen!2sph!4v1678339955781!5m2!1sen!2sph" width="100%" height="370" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+              </div>
+            </form>
+          </div>
+          
+          <div class="col-lg-5" data-aos="fade">
+            <div class="card">
+              <div class="card-body">
+                <form id="submitForm" class="php-form">
+                  {% csrf_token %}
+                  <h3>Feedback:</h3>
+                  <p>You can feedback here all the queries.</p>
+                  <div class="row gy-3">
+                    <div class="col-md-12">
+                      <input type="text" name="subject" class="form-control" placeholder="Subject" required>
+                    </div>
+
+                    <div class="col-md-12">
+                      <textarea class="form-control" name="message" rows="6" placeholder="Message" required></textarea>
+                    </div>
+                    <div class="col-md-6">
+                      <input type="radio" id="male" name="sex" value="1" required>
+                      <label for="male">Male</label>
+                      <input type="radio" id="female" name="sex" value="2" required>
+                      <label for="female">Female</label><br>
+                    </div>
+                    <div class="form-group">
+                        <label>You feeling: </label>
+                        <br>
+                        <input type="radio" id="mood-1" name="mood" value='Worried' class="radio" checked>
+                        <label class="emoji emoji-1" for='mood-1'>😟</label>
+                            
+                        <input type="radio" id="mood-2" name="mood" value='Sad' class="radio">
+                        <label class="emoji emoji-2" for='mood-2'>😡</label>  
+                            
+                        <input type="radio" id="mood-3" name="mood" value='Confused' class="radio">
+                        <label class="emoji emoji-3" for='mood-3'>😔</label>  
+                          
+                        <input type="radio" id="mood-4" name="mood" value='Happy' class="radio">
+                        <label class="emoji emoji-4" for='mood-4'>😊</label>
+                            
+                        <input type="radio" id="mood-5" name="mood" value='Joyful' class="radio">
+                        <label class="emoji emoji-5" for='mood-5'>😂</label>     
+                    </div>
+                  <button class="btn btn-warning" type="submit">Submit</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div><!-- End Quote Form -->
+
+        </div>
+
+      </div>
     </section>
   </main><!-- End #main -->
 
@@ -169,12 +235,12 @@
           <div class="col-lg-4 col-md-6">
             <div class="footer-info">
               <h3>INFORMATION KIOSK</h3>
-              <p>
+              {% comment %} <p>
                 Developer: Allen Efren O. Hilado <br>
                 Brgy 6, Nasipit<br><br>
                 <strong>Phone:</strong> 09487418673<br>
                 <strong>Email:</strong> aeohilado@dswd.gov.ph<br>
-              </p>
+              </p> {% endcomment %}
               <div class="social-links d-flex mt-3">
                 <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-twitter"></i></a>
                 <a href="#" class="d-flex align-items-center justify-content-center"><i class="bi bi-facebook"></i></a>
@@ -183,8 +249,6 @@
               </div>
             </div>
           </div><!-- End footer info column-->
-
-
         </div>
       </div>
     </div>
@@ -203,7 +267,7 @@
           &copy; Copyright <strong><span>RICTMS</span></strong>. All Rights Reserved
         </div>
         <div class="credits">
-          Developed by: Allen Efren O. Hilado</a>
+          {% comment %} Developed by: Allen Efren O. Hilado</a> {% endcomment %}
         </div>
       </div>
     </div>
@@ -267,6 +331,59 @@
     var id = $(this).data('id');
     $('#editDirectory').modal('show').find('#load_data').load('/modalforpdfviewing/' + $(this).data('id'));
   });
+  </script>
+  <script>
+    function validationForm(){
+      var invalid = false;
+      $('.form-control').each(function() {
+          if (/<[a-z][\s\S]*>/i.test($(this).val())) {
+              $(this).addClass('is-invalid');
+              $(this).next('.invalid-feedback').html("The field cannot contain HTML tags.")
+              invalid = true;
+          }
+      });
+      return invalid;
+    }
+    $('#submitForm').on('submit', function(e){
+      e.preventDefault();
+      if (!validationForm()){
+          var form = new FormData(this);
+          Swal.fire({
+              title: "Are you sure",
+              text: "You want to post this?",
+              icon: "info",
+              showCancelButton: true,
+              confirmButtonText: "Yes",
+              allowOutsideClick: false,
+              showLoaderOnConfirm: true,
+              preConfirm: function (){
+                  return $.post({
+                      url: "{% url 'uploadFeedback' %}",
+                      data: form,
+                      success : function (response){
+                          if(!response.error){
+                              Swal.fire({
+                                  title: "Good job!",
+                                  html:  response.msg,
+                                  icon: "success",
+                                  allowOutsideClick: false,
+                              }).then((result) => {
+                                  if (result.isConfirmed){
+                                      location.reload()
+                                  }
+                              });
+                          } else {
+                              Swal.fire('Oops...', response.msg, 'warning');
+                          }
+                      },
+                      cache       : false,
+                      contentType : false,
+                      processData : false,
+                  });
+              },
+          });
+        }
+    });
   </script>
   {% comment %} <script type="text/javascript">
     (function(){

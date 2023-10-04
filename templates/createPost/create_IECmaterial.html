@@ -1,0 +1,232 @@
+{% extends 'layout.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="page-title">
+        <div class="row">
+            <div class="col-6">
+                <h3>IEC materials</h3>
+            </div>
+            <div class="col-6">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item">User</li>
+                    <li class="breadcrumb-item active" data-bs-toggle="modal" data-bs-target="#add-user-modal">Add data</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        {% for row in files %}
+        <div class="col-sm-6">
+            <div class="card" id="created_post_data">
+                <div class="card-body" >
+                    <h3 class="card-title">{{row.title}}</h3>
+                    <p>{{row.description}}</p>
+                    <div style="width: 100%; height: 700px;">
+                        <iframe src="{{row.video.url}}"
+                                style="width: 100%; height: 100%; border: none;"></iframe>
+                    </div>
+                    <a href="#" class="card-link">Delete</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<div class="modal fade" id="add-user-modal">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header flex-column position-relative">
+                <h5 class="modal-title f-w-700">Satellite Offices list</h5>
+                <small class="modal-subtitle">Please fill out the form below.</small>
+                <button class="btn-close position-absolute" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="submitForm">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group mb-1">
+                        <label for="Remarks" class="form-label">Title for Tab<span class="txt-danger">*</span></label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" name="title" rows="2" placeholder="Title" required></textarea>
+                    </div>
+                    <div class="form-group mb-1">
+                        <label for="Remarks" class="form-label">Title <span class="txt-danger">*</span></label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" name="title_IECMaterial" rows="2" placeholder="Title" required></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="Remarks" class="form-label">Description <span class="txt-danger">*</span></label>
+                        <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="2" placeholder="Description" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="formFileSm" class="form-label">Upload Picture</label>
+                        <input class="form-control form-control-sm" id="pictureDirectory" type="file" name="file">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" type="button" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="editDirectory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            {% csrf_token %}
+            <div class="modal-body" id="load_data">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script for="init">
+    $(document).ready(function(){
+        $('#satelliteoffices').DataTable({
+            'serverSide': true,
+            'processing': true,
+            'deferRender': true,
+            'lengthMenu': [ 10, 25, 50, 100 ],
+            'order': [[ 2, 'desc' ]],
+            'bDestroy': true,
+            'ajax': {
+                
+                'url': '/api/created_post/directoryswadviews/?format=datatables',
+                'type': 'GET',
+            },
+            'fnCreatedRow': function (row, data, index) {
+                $(row).attr('id', data['id']);
+            },
+            'columns': [
+                {'data': 'id',
+                    'render': function(data, type, row, meta) {
+                        return "<a href='javascript:void(0);' data-role='delete' data-id='"+ row['id'] + "'>Delete</a>"
+                    },
+                    'searchable': false,
+                    'sortable': false
+                },
+                {'data': 'swad_team','className': 'text-center'},
+                {'data': 'address','className': 'text-center', 'searchable': false,'sortable': false},
+                {'data': 'contact_no','className': 'text-center', 'searchable': false,'sortable': false},
+                {'data': 'email','className': 'text-center', 'searchable': false,'sortable': false},
+                {'data': 'date_created','className': 'text-center','searchable': false,'sortable': false},
+                {'data': 'created_by','className': 'text-center', 'searchable': false,'sortable': false},
+            ]
+        });
+    });
+    $(document).on('click','a[data-role=details]', function(){ // FOR MODAL SUMMARY
+        var id = $(this).data('id');
+        console.log(id)
+        $('#editDirectory').modal('show').find('#load_data').load('/create/modalForDirectoryList/' + $(this).data('id'));
+    });
+</script>
+<script>
+	$(document).on('click', 'a[data-role=delete]', function(){
+    	var id = $(this).data('id');
+        console.log("CHECK",id)
+    	Swal.fire({
+		  title: "Are you sure",
+          text: "You want to remove this information?",
+		  icon: "warning",
+		  showCancelButton: true,
+		  confirmButtonColor: "#3498DB",
+		  confirmButtonText: "Yes",
+		  allowOutsideClick: false,
+		}).then((result) => {
+		    if (result.isConfirmed) {
+		        Swal.showLoading()
+				$.ajax({
+					url: "{% url 'remove_information' %}",
+					data: {
+						id: id
+					},
+					type: "POST"
+				})
+				.done(function(data){
+					if (data.data == 'success'){
+						Swal.fire({
+						  title: "Good job!",
+						  text: "Information removed",
+						  icon: "success",
+						  confirmButtonColor: "#3498DB",
+						  allowOutsideClick: false,
+						}).then((result) => {
+		    				if (result.isConfirmed) {
+                                location.reload()
+						  	}
+						});
+					}
+				});
+			}
+		});
+    });
+</script>
+
+<script for="request">
+        function validationForm(){
+            var invalid = false;
+            $('.form-control').each(function() {
+                if (/<[a-z][\s\S]*>/i.test($(this).val())) {
+                    $(this).addClass('is-invalid');
+                    $(this).next('.invalid-feedback').html("The field cannot contain HTML tags.")
+                    invalid = true;
+                }
+            });
+            return invalid;
+        }
+
+        function clearValidation(){
+            $('.form-control').each(function() {
+                $(this).removeClass('is-invalid');
+                $(this).next('.invalid-feedback').html("");
+            });
+        }
+
+        $('#submitForm').on('submit', function(e){
+            e.preventDefault();
+            if (!validationForm()){
+                var form = new FormData(this);
+                Swal.fire({
+                    title: "Are you sure",
+                    text: "You want to add this data?",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonText: "Yes",
+                    allowOutsideClick: false,
+                    showLoaderOnConfirm: true,
+                    preConfirm: function (){
+                        return $.post({
+                            url: "{% url 'createIECMaterial' %}",
+                            data: form,
+                            success : function (response){
+                                if(!response.error){
+                                    Swal.fire({
+                                        title: "Good job!",
+                                        html:  response.msg,
+                                        icon: "success",
+                                        allowOutsideClick: false,
+                                    }).then((result) => {
+                                        if (result.isConfirmed){
+                                            $('#submitForm').trigger('reset');
+                                            location.reload()
+                                        }
+                                    });
+                                } else {
+                                    Swal.fire('Oops...', response.msg, 'warning');
+                                }
+                            },
+                            cache       : false,
+                            contentType : false,
+                            processData : false,
+                        });
+                    },
+                });
+            }
+        });
+</script>
+{% endblock %}

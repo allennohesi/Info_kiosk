@@ -1,0 +1,57 @@
+{% load static %}
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <style>
+        table, td, th {
+            border: 1px solid;
+          }
+          
+          table {
+            width: 100%;
+            border-collapse: collapse;
+          }
+        @media print {
+            body {
+                margin: 5px;
+            }
+        }
+        .content {
+            text-align: right;
+        }
+    </style>
+    <body>
+        <table>
+            <tr>
+                <tr>
+                    <td colspan="1" style="border-color: white;border-right: 1px solid;border-left: 1px solid;border-top: 1px solid;">
+                        <img src="{% static 'landingpage/assets/img/insignia2.png' %}" width="120px" height="45px"><label style="text-align:right;">{{dateToday}}</label>                        
+                    </td>                    
+                </tr>
+                <tr>
+                    <td style="border-color:white;border-right: 1px solid;border-left: 1px solid;border-bottom: 1px solid;margin-top:-5px;">
+                        <label style="font-size: 25px;
+                        font-weight:bold;"><b><center>CIS</center></b></label>
+                    </td>
+                </tr>
+              <th colspan="2">{% for row in data %}{{row.Lane}}<br>Category: {{row.Category}}{% endfor %}</td>
+            </tr>
+            <tr style="margin-top:-20px;">
+              <td style="text-align:center;font-family: Century Gothic">
+                <br><label style="font-weight: bold;">Please wait until your Number was Called <br>YOUR NUMBER IS:</label>                
+                {% for row in data %}
+                    <label style="font-size: 35px;font-weight:bold"><br>{{row.Number}}<br></label>
+                {% endfor %}
+              </td>
+            </tr>
+        </table>
+        <center><h5>-END OF THE LINE-<h5></center>
+    </body>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            window.print();
+            history.go(-1); 
+         });
+    </script>
+</html>

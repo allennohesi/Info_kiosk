@@ -25,7 +25,7 @@
                 <div class="card-body" >
                     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#add-user-modal"><i class="fa fa-plus"></i> Add Data</button>
                     <br><br>
-                    <table class="table table-sm table-bordered table-hover w-100" id="post-data">
+                    <table class="table table-sm table-bordered table-hover w-100" id="satelliteoffices">
                         <thead>
                             <th>Action</th>
                             <th class="text-center">SWAD TEAM</th>
@@ -91,7 +91,7 @@
 {% block script %}
 <script for="init">
     $(document).ready(function(){
-        $('#post-data').DataTable({
+        $('#satelliteoffices').DataTable({
             'serverSide': true,
             'processing': true,
             'deferRender': true,
@@ -109,7 +109,7 @@
             'columns': [
                 {'data': 'id',
                     'render': function(data, type, row, meta) {
-                        return "<a href='javascript:void(0);' data-role='details' data-id='"+ row['id'] + "'>Delete</a>"
+                        return "<a href='javascript:void(0);' data-role='delete' data-id='"+ row['id'] + "'>Delete</a>"
                     },
                     'searchable': false,
                     'sortable': false
@@ -127,6 +127,47 @@
         var id = $(this).data('id');
         console.log(id)
         $('#editDirectory').modal('show').find('#load_data').load('/create/modalForDirectoryList/' + $(this).data('id'));
+    });
+</script>
+<script>
+	$(document).on('click', 'a[data-role=delete]', function(){
+    	var id = $(this).data('id');
+        console.log("CHECK",id)
+    	Swal.fire({
+		  title: "Are you sure",
+          text: "You want to remove this information?",
+		  icon: "warning",
+		  showCancelButton: true,
+		  confirmButtonColor: "#3498DB",
+		  confirmButtonText: "Yes",
+		  allowOutsideClick: false,
+		}).then((result) => {
+		    if (result.isConfirmed) {
+		        Swal.showLoading()
+				$.ajax({
+					url: "{% url 'remove_information' %}",
+					data: {
+						id: id
+					},
+					type: "POST"
+				})
+				.done(function(data){
+					if (data.data == 'success'){
+						Swal.fire({
+						  title: "Good job!",
+						  text: "Information removed",
+						  icon: "success",
+						  confirmButtonColor: "#3498DB",
+						  allowOutsideClick: false,
+						}).then((result) => {
+		    				if (result.isConfirmed) {
+                                $('#satelliteoffices').DataTable().ajax.reload();
+						  	}
+						});
+					}
+				});
+			}
+		});
     });
 </script>
 <script for="request">
@@ -175,7 +216,7 @@
                                     }).then((result) => {
                                         if (result.isConfirmed){
                                             $('#submitForm').trigger('reset');
-                                            $('#post-data').DataTable().ajax.reload();
+                                            $('#satelliteoffices').DataTable().ajax.reload();
                                             clearValidation();
                                             $('#add-user-modal').modal('hide');
                                         }

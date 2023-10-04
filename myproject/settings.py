@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_auth',
     'app',
-    
 ]
 
 
@@ -71,12 +70,28 @@ WSGI_APPLICATION = 'myproject.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'kioskDB',
-        'HOST': 'localhost',
-        'USER': 'root',
-        'PASSWORD': '',
+        'NAME': 'kioskdb',
+        'HOST': '172.31.240.127',
+        'USER': 'myportal',
+        'PASSWORD': 'Dc-VrbYJ6sWEW3MP',
         'PORT': '3306'
-    }
+    },
+    # 'My PORTAL': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'kioskdb',
+    #     'HOST': '172.31.240.127',
+    #     'USER': 'myportal',
+    #     'PASSWORD': 'Dc-VrbYJ6sWEW3MP',
+    #     'PORT': '3306'
+    # },
+    # 'queing': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'que_databasenew',
+    #     'HOST': '172.31.242.29',
+    #     'USER': 'admin',
+    #     'PASSWORD': 'admin',
+    #     'PORT': '3306'
+    # },
 }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -114,11 +129,12 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
         'rest_framework_datatables.filters.DatatablesFilterBackend',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework_datatables.pagination.DatatablesPageNumberPagination',
-    'PAGE_SIZE': 10,
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework_datatables.pagination.DatatablesPageNumberPagination',
+    # 'PAGE_SIZE': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.TokenAuthentication'
     ],
 
 }
