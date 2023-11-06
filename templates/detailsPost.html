@@ -91,12 +91,12 @@
         <ul class="nav nav-tabs row  g-2 d-flex">
           <li class="nav-item col-6">
             <a class="nav-link active show text-dark" data-bs-toggle="tab" data-bs-target="#tab-1">
-              <p>Portable Document Format</p>
+              <p>English Citizens Charter</p>
             </a>
           </li><!-- End tab nav item -->
           <li class="nav-item col-6">
             <a class="nav-link text-dark" data-bs-toggle="tab" data-bs-target="#tab-2">
-              <p>Video</p>
+              <p>Bisaya Citizens Charter</p>
             </a><!-- End tab nav item -->
         </ul>
         <div class="tab-content">
@@ -198,33 +198,95 @@
           </div><!-- End tab content item -->
           <div class="tab-pane" id="tab-2">
             <div class="row">
-              <div class="col-lg-12 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center">
+              <div class="col-lg-12 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100">
                 <hr>
-                <div class="col-lg-12">
-                  <div class="tab-content">
-                    {% for row in uploaded_video %}
-                    <div class="tab-pane active show" id="{{row.title_post}}">
-                      <div class="row">
-                        <article class="blog-details">
-                          <h2 class="title">Title: <u>{{row.title_text}}</u></h2>
-                          <div class="content">
-                            <p>
-                              {{row.description_post}}
-                            </p>
-                          </div>
-                          <div class="meta-top">
-                            <ul>
-                              <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2020-01-01">{{row.date_created}}</time></a></li>
-                            </ul>
-                          </div>
-                          <br>
-                            <video controls src="{{row.file_upload.url}}" style="width:100%; height:450px;"></video>
-                        </article>
-                        <br>
-                        
+                <div class="row g-5">
+                  <div class="col-lg-4">
+                    <div class="sidebar">
+                      <div class="sidebar-item categories">
+                        <h3 class="sidebar-title">Services</h3>
+                        <ul class="mt-1 nav nav-tabs row g-2 d-flex mt-3">
+                          {% for row in local_dialect %}
+                          {% if row.id == local_dialect_specific.id %}
+                          <li><a class="nav-link active" data-bs-toggle="tab" data-bs-target="#{{row.title_post}}">{{row.title_text}}</a></li>
+                          {% else %}
+                          <li><a class="nav-link" data-bs-toggle="tab" data-bs-target="#{{row.title_post}}">{{row.title_text}}</a></li>
+                          {% endif %}
+                          {% endfor %}
+                        </ul>
                       </div>
+                      <!-- End sidebar categories-->
+                      <!-- End sidebar recent posts-->
+                      <!-- End sidebar tags-->
+        
+                    </div><!-- End Blog Sidebar -->
+                  </div>
+                  <div class="col-lg-8">
+                    <div class="tab-content">
+                      {% for row in local_dialect %}
+                      {% if row.id == local_dialect_specific.id %}
+                      <div class="tab-pane active show" id="{{row.title_post}}">
+                        <div class="row">
+                          <article class="blog-details">
+                            <h2 class="title">Title: <u>{{row.title_text}}</u></h2>
+                            <div class="content">
+                              <p>
+                                {{row.description_post}}
+                              </p>
+                            </div>
+                            <div class="meta-top">
+                              <ul>
+                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2020-01-01">{{row.date_created}}</time></a></li>
+                              </ul>
+                            </div>
+                            <br>
+                              {% if row.file_ext == ".mp4"  %}
+                                  <video controls src="{{row.file_upload.url}}" style="width:100%; height:100%"></video>
+                              {% elif row.file_ext == ".pdf" %}
+                                  <iframe src="{{row.file_upload.url}}" width="100%" height="750px" frameborder="0" style="border:1px solid #CCC;"></iframe>
+                              {% else %}
+                                  <div class="post-img">
+                                      <img src="{{row.file_upload.url}}" alt="" class="img-fluid">
+                                  </div>
+                              {% endif %}
+                          </article>
+                          <br>
+                          
+                        </div>
+                      </div>
+                      {% else%}
+                      <div class="tab-pane" id="{{row.title_post}}">
+                        <div class="row">
+                          <article class="blog-details">
+                            <h2 class="title">Title: <u>{{row.title_text}}</u></h2>
+                            <div class="content">
+                              <p>
+                                  {{row.description_post}}
+                              </p>
+                            </div>
+                            <div class="meta-top">
+                              <ul>
+                                <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <a href="blog-details.html"><time datetime="2020-01-01">{{row.date_created}}</time></a></li>
+                              </ul>
+                            </div>
+                            <br>
+                              {% if row.file_ext == ".mp4"  %}
+                                  <video controls src="{{row.file_upload.url}}" style="width:100%; height:100%"></video>
+                              {% elif row.file_ext == ".pdf" %}
+                                  <iframe src="{{row.file_upload.url}}" width="100%" height="750px" frameborder="0" style="border:1px solid #CCC;"></iframe>
+                              {% else %}
+                                  <div class="post-img">
+                                      <img src="{{row.file_upload.url}}" alt="" class="img-fluid">
+                                  </div>
+                              {% endif %}
+                          </article>
+                          <br>
+                          
+                        </div>
+                      </div>
+                      {% endif %}
+                      {% endfor %}<!-- End tab content item -->
                     </div>
-                    {% endfor %}<!-- End tab content item -->
                   </div>
                 </div>
               </div>
