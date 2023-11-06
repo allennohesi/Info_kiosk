@@ -114,17 +114,21 @@ def indexData(request,pk):
     picture = upload_profile.objects.filter(created_id=pk).first()
     created_post = createdPost.objects.filter(id=pk).first()
 
-    uploaded_specific = uploadfile.objects.filter(title_id=pk).first() #TO GET THE FIRST UPLOADED AND MATCH TO ALL UPLOADED
-    
-    uploaded = uploadfile.objects.filter(title_id=pk,file_ext=".pdf").order_by('id')
-    uploaded_video = uploadfile.objects.filter(title_id=pk,file_ext=".mp4").order_by('id')
+    uploaded_specific = uploadfile.objects.filter(title_id=pk, language_status=0).first() #TO GET THE FIRST UPLOADED AND MATCH TO ALL UPLOADED
+    uploaded = uploadfile.objects.filter(title_id=pk,file_ext=".pdf", language_status=0).order_by('id')
+
+    local_dialect_specific = uploadfile.objects.filter(title_id=pk,language_status=1).first() #GetTheFirstUploadedDataLocalDialect
+    local_dialect = uploadfile.objects.filter(title_id=pk,file_ext=".pdf",language_status=1).order_by('id')
 
     context = {
         'profile': picture,
-        'uploaded': uploaded,
         'created_post': created_post,
+
+        'uploaded': uploaded,
         'uploaded_specific': uploaded_specific,
-        'uploaded_video': uploaded_video
+
+        'local_dialect_specific': local_dialect_specific,
+        'local_dialect': local_dialect,
     }
     return render(request, 'detailsPost.html', context)
 

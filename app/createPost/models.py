@@ -49,6 +49,7 @@ class uploadfile(models.Model):
     date_created = models.DateTimeField(default=timezone.now)
     file_ext = models.CharField(max_length=100)
     user = models.ForeignKey(AuthUser, models.DO_NOTHING)
+    language_status = models.IntegerField(default=0)
     class Meta:
         managed = False
         db_table = 'created_postdata'
