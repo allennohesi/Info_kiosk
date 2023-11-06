@@ -46,7 +46,8 @@ def post_data(request, pk):
 			file_upload=request.FILES.get('upload'),
 			title_id=pk,
 			file_ext=file_extension,
-			user_id=request.user.id
+			user_id=request.user.id,
+			language_status=request.POST.get('flexRadioDefault')
 		)
 		return JsonResponse({'msg': 'You successfully post data'})
 	uploaded = uploadfile.objects.filter(title_id=pk).order_by('-id')
