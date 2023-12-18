@@ -1,7 +1,7 @@
 from django.urls import path
 
 from api.created_post.views import createdViews, createdFeedBackViews, createDirectoryViews, createDirectorySwadViews, \
-            createdPostDataViews
+            createdPostDataViews, IecMaterialDataViews
 
 urlpatterns = [
     path('list/', createdViews.as_view(), name='api_createdPost_list'),
@@ -12,5 +12,7 @@ urlpatterns = [
     #VIEWS
     path('directoryswadviews/', createDirectorySwadViews.as_view(), name='api_createDirectorySwadViews'),
     #FORDIRECT
-    path('createdpostviews/', createdPostDataViews.as_view(), name='apo_createdPostDataViews')
+    path('createdpostviews/', createdPostDataViews.as_view(), name='apo_createdPostDataViews'),
+
+    path('iecmaterialviews/', IecMaterialDataViews.as_view(), name='IecMaterialDataViews')
 ]

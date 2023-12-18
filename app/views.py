@@ -155,24 +155,34 @@ def modalforpdfviewing(request,pk):
 
 
 def vacancies(request):
+    current_date = today.strftime('%B %d, %Y')
+    from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
     vacancy = requests.get('https://caraga-iris-internal.dswd.gov.ph/api/vacancies/process/', headers={'Content-Type': 'application/json',
                                       'Authorization': 'Token {}'.format('243f229926212da6b5170d5e604a038d28fec9f4')})
+    data = vacancy.json()
 
-#     data_kiosk = requests.get('http://127.0.0.1:8000/api/created_post/directoryviews/', headers={'Content-Type': 'application/json',
-#                                              'Authorization': 'Token {}'.format('9c30ef9e353f25cd777ff1c805e3d9683b43f682')})
+    # try:
+    #     item = paginator.page(page)
+    # except PageNotAnInteger:
+    #     item = paginator.page(1)
+    # except EmptyPage:
+    #     item = paginator.page(paginator.num_pages)
 
-#     info_kiosk_data = data_kiosk.json()
-#     print(info_kiosk_data[0]['id'])
-# 9
+        # data_kiosk = requests.get('http://127.0.0.1:8000/api/created_post/directoryviews/', headers={'Content-Type': 'application/json',
+        #                                         'Authorization': 'Token {}'.format('9c30ef9e353f25cd777ff1c805e3d9683b43f682')})
+
+        # info_kiosk_data = data_kiosk.json()
+        # print(info_kiosk_data[0]['id'])
+    
 
 
-    current = today.strftime('%B %d, %Y')
+ 
     # token = Token.objects.create(user_id=1)
     # print("WAW",token.key)
 
     context = {
-          'value': vacancy.json(),
-          'current': current,
+        'value': data,
+        'date': current_date,
         #   'test':data_kiosk.json(),
     }
     return render(request, 'vacancies.html', context)

@@ -1,6 +1,6 @@
 from django import template
 from app.models import AuthUser, AuthUserGroups
-from datetime import datetime
+from datetime import date, datetime, timedelta
 import os
 import requests
 currentMonth = datetime.now().month
@@ -21,6 +21,14 @@ def get_user_info(user_id):
 def get_user_role(user_id):
     return AuthUserGroups.objects.filter(user_id=user_id).first().group.name
 
+@register.simple_tag
+def check_if_deadline(deadline_at, date):
+    date_today_formatted = datetime.strptime(date, '%B %d, %Y').date()
+    deadline_at_formatted = datetime.strptime(deadline_at, '%B %d, %Y').date()
+    if date_today_formatted <= deadline_at_formatted:
+        return True
+    else:
+        return False
 
 # @register.simple_tag
 # def getallData():
