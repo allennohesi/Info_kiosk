@@ -83,12 +83,12 @@
     <section id="services" class="services section-bg">
       
       <div class="container" data-aos="fade-up">
-
         <div class="row">
             <div class="col-lg-12 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100">
             <div class="row gy-4">
                 {% for row in value %}
-                {% if row.deadline_at >= current %}
+                {% check_if_deadline row.deadline_at date as check_if_deadline %}
+                {% if check_if_deadline %}
                 <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="100">
                     <div class="service-item  position-relative">
                         <div class="icon">
@@ -106,6 +106,37 @@
             </div>
             <br>
         </div>
+        {% comment %} <div class="row">
+          <div class="col-lg-12 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100">
+            <div class="row gy-4">
+              <br>
+              Showing {{ items.start_index }} - {{ items.end_index }} of {{ items.paginator.count }} entries&emsp;
+              {% if items.has_other_pages %}
+                {% if items.has_previous %}
+                <a class="btn btn-default" href="?page={{ items.previous_page_number }}">Previous</a>
+                {% else %}
+                  <a class="btn btn-default disabled">Previous</a>
+                {% endif %}
+                {% for row in items.paginator.page_range %}
+
+                  <div class="col-lg-6 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                      <div class="service-item  position-relative">
+                          <div class="icon">
+                          <i class="fa-solid fa-briefcase"></i>
+                          </div>
+                          <b><p>{{row.position|safe}}</p></b>
+                          <p>No. of Vacancies: {{row.qty}} | Applicant: {{row.total_app}} | Salary Grade: {{row.salary_grade}} </p>
+                          <p>Secretariat: {{row.secretariat}} | Deadline: {{row.deadline_at}}.</p>
+                          <a href="https://caraga-iris.dswd.gov.ph/" target="_blank" class="readmore stretched-link">Learn more <i class="bi bi-arrow-right"></i></a>
+                      </div>
+                  </div>
+
+                {% endfor %}
+              {% endif %}
+            </div>
+          </div>
+          <br>
+        </div>       {% endcomment %}
       </div>
     </section>
   </main><!-- End #main -->

@@ -71,11 +71,19 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kioskdb',
-        'HOST': '172.31.240.127',
-        'USER': 'myportal',
-        'PASSWORD': 'Dc-VrbYJ6sWEW3MP',
+        'HOST': 'localhost',
+        'USER': 'root',
+        'PASSWORD': '',
         'PORT': '3306'
     },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql',
+    #     'NAME': 'kioskdb',
+    #     'HOST': '172.31.240.127',
+    #     'USER': 'myportal',
+    #     'PASSWORD': 'Dc-VrbYJ6sWEW3MP',
+    #     'PORT': '3306'
+    # },
     # 'My PORTAL': {
     #     'ENGINE': 'django.db.backends.mysql',
     #     'NAME': 'kioskdb',

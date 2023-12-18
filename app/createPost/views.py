@@ -2,10 +2,16 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from app.models import AuthUser
+from app.models import AuthUser, AuthtokenToken
 from app.createPost.models import createdPost, uploadfile, upload_profile, location_picture, createLocation, createDirectory, createDirectoryPicture, \
 							createDirectorySwad, iecMaterial
 import os
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.contrib.auth.models import User
+from rest_framework.authtoken.models import Token
+import requests
+
 from django.views.decorators.csrf import csrf_exempt
 
 
@@ -163,21 +169,64 @@ def remove_information(request):
 		createDirectorySwad.objects.filter(id=request.POST.get('id')).delete()
 	return JsonResponse({'data': 'success'})
 
-#create IEC Material
-
 @login_required
 def createIECMaterial(request):
-	if request.method == "POST":
-		create_post = iecMaterial.objects.create(
-			title=request.POST.get('title'),#ForTabNameOnly
-			title_IECMaterial=request.POST.get('title_IECMaterial'),
-			description=request.POST.get('description'),
-			video=request.FILES.get('file')
-		)
-		return JsonResponse({'msg': 'You successfully added IEC Material'})
-	
+	from django.http import JsonResponse
+	import json
+	api_key = '7ae5e3196397a550e5a87221c486b4ceee651a58'
+	api_url = 'http://127.0.0.1:8000/api/created_post/iecmaterialviews/'
+	headers = {
+		'Content-Type': 'application/json',
+		'Authorization': f'Token {api_key}',
+	}
+	search_query = request.GET.get('search', '')
+	params = {'search': search_query}
+	response = requests.get(api_url, headers=headers, params=params)
+	data = response.json()
+
+	search = request.GET.get('search', '')
+	# print(data[0]['video'])
+	page = request.GET.get('page', 1)
+	rows = request.GET.get('rows', 8)
 	context = {
-		'files': iecMaterial.objects.all(),
-		
+		'data': Paginator(data, rows).page(page),
 	}
 	return render(request, 'createPost/create_IECmaterial.html', context)
+
+
+#create IEC Material
+
+# @login_required # FINAL CODE
+# def createIECMaterial(request):
+# 	from django.http import JsonResponse
+# 	import json
+# 	# token = Token.objects.create(user_id=2) #CREATING OF API KEY
+# 	# print(token.key)
+# 	# if request.method == "POST":
+# 	# 	create_post = iecMaterial.objects.create(
+# 	# 		title=request.POST.get('title'),#ForTabNameOnly
+# 	# 		title_IECMaterial=request.POST.get('title_IECMaterial'),
+# 	# 		description=request.POST.get('description'),
+# 	# 		video=request.FILES.get('file')
+# 	# 	)
+# 	# 	return JsonResponse({'msg': 'You successfully added IEC Material'})
+
+# 	iecmaterial = requests.get('http://127.0.0.1:8000/api/created_post/iecmaterialviews/', headers={'Content-Type': 'application/json',
+# 									  'Authorization': 'Token {}'.format('7ae5e3196397a550e5a87221c486b4ceee651a58')})
+# 	search = request.GET.get('search', '')
+
+# 	# data = iecmaterial.json()
+# 	# print(data[0]['video'])
+	
+# 	page = request.GET.get('page', 1)
+# 	rows = request.GET.get('rows', 1)
+	
+
+# 	context = {
+# 		'data': Paginator(iecMaterial.objects.filter(Q(title__icontains=search)).order_by('title'), rows).page(page),
+# 		#'datas': Paginator(data, rows).page(page),
+# 	}
+# 	return render(request, 'createPost/create_IECmaterial.html', context)
+
+
+

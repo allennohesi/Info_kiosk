@@ -2,10 +2,9 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 
 from api.created_post.serializers import createdPostSerializer, createFeedbackSerializer, createDirectorySerializer, \
-			createDirectorySwadSerializer, createdPostDataSerializer
+			createDirectorySwadSerializer, createdPostDataSerializer, iecMaterialSerializer
 
-from app.createPost.models import createdPost, createFeedback, createDirectory, createDirectorySwad, uploadfile
-
+from app.createPost.models import createdPost, createFeedback, createDirectory, createDirectorySwad, uploadfile, iecMaterial
 
 class createdViews(generics.ListAPIView):
 	permission_classes = [IsAuthenticated]
@@ -34,3 +33,16 @@ class createDirectorySwadViews(generics.ListAPIView):
 class createdPostDataViews(generics.ListAPIView):
 	queryset = uploadfile.objects.filter(file_ext=".pdf")
 	serializer_class = createdPostDataSerializer
+
+class IecMaterialDataViews(generics.ListAPIView):
+	permission_classes = [IsAuthenticated]
+	serializer_class = iecMaterialSerializer
+
+	def get_queryset(self):
+		search_term = self.request.query_params.get('search', None)
+		if search_term:
+			queryset = iecMaterial.objects.filter(title_IECMaterial__icontains=search_term)
+			return queryset
+		else:
+			queryset = iecMaterial.objects.all()
+			return queryset
