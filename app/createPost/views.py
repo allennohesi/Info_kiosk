@@ -174,7 +174,7 @@ def createIECMaterial(request):
 	from django.http import JsonResponse
 	import json
 	api_key = '7ae5e3196397a550e5a87221c486b4ceee651a58'
-	api_url = 'http://127.0.0.1:8000/api/created_post/iecmaterialviews/'
+	api_url = 'https://caraga-infokiosk-staging.dswd.gov.ph/api/created_post/iecmaterialviews/'
 	headers = {
 		'Content-Type': 'application/json',
 		'Authorization': f'Token {api_key}',

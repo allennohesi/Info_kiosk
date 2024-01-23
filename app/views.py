@@ -114,9 +114,9 @@ def indexData(request,pk):
     picture = upload_profile.objects.filter(created_id=pk).first()
     created_post = createdPost.objects.filter(id=pk).first()
     uploaded_specific = uploadfile.objects.filter(title_id=pk, language_status=0).first() #TO GET THE FIRST UPLOADED AND MATCH TO ALL UPLOADED
-    uploaded = uploadfile.objects.filter(title_id=pk,file_ext=".pdf", language_status=0).order_by('id')
+    uploaded = uploadfile.objects.filter(title_id=pk,file_ext=".pdf", language_status=0).order_by('id')[:8]
     local_dialect_specific = uploadfile.objects.filter(title_id=pk,language_status=1).first() #GetTheFirstUploadedDataLocalDialect
-    local_dialect = uploadfile.objects.filter(title_id=pk,file_ext=".pdf",language_status=1).order_by('id')
+    local_dialect = uploadfile.objects.filter(title_id=pk,file_ext=".pdf",language_status=1).order_by('id')[:8]
     context = {
         'profile': picture,
         'created_post': created_post,
