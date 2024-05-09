@@ -162,7 +162,7 @@
     
               <li class="nav-item col-12">
                 <a class="nav-link active show" data-bs-toggle="tab" data-bs-target="#tab-1">
-                  <h4>Directory of Officials</h4>
+                  <h4>CIS transactions</h4>
                 </a>
               </li><!-- End tab nav item -->
             </ul>
@@ -170,27 +170,19 @@
               <div class="tab-pane active show" id="tab-1">
                 <div class="row">
                   <div class="col-lg-12 order-2 order-lg-1 mt-3 mt-lg-0 d-flex flex-column justify-content-center" data-aos="fade-up" data-aos-delay="100">
-                    <h3>Directory List</h3>
-                    <table class="table table-responsive table-sm table-bordered" id="incoming-table">
+                    <h3>Transactions</h3>
+                    <table class="table table-responsive table-sm table-bordered" id="incoming-table" width="100%">
                       <thead>
                           <tr>
                               <th class="text-center">#</th>
-                              <th class="text-center">Action</th>
                               <th class="text-center">Transaction Status</th>
-                              <th>Picture</th>
                               <th>Tracking Code</th>
                               <th>Client Name</th>
                               <th>Beneficiary Name</th>
                               <th class="text-center">Date of Transaction</th>
                               <th>Social Worker</th>
                               {% comment %} <th class="display-none">Case Study</th> {% endcomment %}
-                              <th>Case study</th>
-                              <th>Case study Status</th>
                               <th class="text-center">Assistance type</th>
-                              <th>Service provider</th>
-                              <th>Mode of release</th>
-                              <th>Amount</th>
-                              <th class="text-center">DV - Title</th>
                           </tr>
                       </thead>
                     </table>
@@ -579,120 +571,33 @@
                 return meta.row + meta.settings._iDisplayStart + 1;
             },
         },
-        {'data': 'transaction',
-            'render': function(data, type, row, meta) {
-                return "<a href='javascript:void(0);' data-role='details' data-id='" + row['transaction'] + "'>Details</a> | " +
-                "<a href='javascript:void(0)' data-role='edit_amount' data-id="+ row['transaction'] + ">Status</a> | " +
-                "<a href='javascript:void(0);' data-role='direct' data-id='"+ row['transaction'] + "'>Track</a>";
-            },
-            'sortable': false,
-            'searchable': false
-        },
         {'data': 'status', 'className': 'text-center', 'searchable': false,
             'render': function(data,type,row,meta){
                 if(row['status'] == null){
-                    return "<button class='badge badge-dark'><i class='fa fa-check-circle'> N/a</i></button>"
+                    return "N/a"
                 }else if(row['status'] == 1){
-                    return "<span class='badge badge-dark'>Pending</span>"
+                    return "Pending"
                 }else if(row['status'] == 2){
-                    return "<span class='badge badge-warning'>Ongoing</span>"
+                    return "Ongoing"
                 }else if(row['status'] == 3){
-                    return "<span class='badge badge-info'>For Uploading Picture</span>"
+                    return "For Uploading Picture"
                 }else if(row['status'] == 4){
-                    return "<span class='badge badge-danger'>Hold</span>"
+                    return "Hold"
                 }else if(row['status'] == 5){
-                    return "<span class='badge badge-danger'>Cancelled</span>"
+                    return "Cancelled"
                 }else if(row['status'] == 6){
-                    return "<span class='badge badge-success'>Completed</span>"
+                    return "Completed"
                 }else if(row['status'] == 7){
-                    return "<span class='badge badge-warning'>Ongoing</span>"
+                    return "Ongoing"
                 }
             }
-        },
-        {'data': 'get_picture',
-            'render': function(data, type, row, meta) {
-                if (data) {
-                    return `<div class="image-container">
-                        <img loading="lazy" class="rounded-circle img-radius align-top m-r-15" 
-                            data-toggle="popover" data-trigger="hover" 
-                            data-html="true" loading="lazy" 
-                            style="object-fit:cover; width: 40px; height: 40px;" 
-                            data-placement="right" 
-                            data-content="<img loading='lazy' src='`+ data + `' style='width: 250px; height: 250px; object-fit:cover;'>" 
-                            src='`+ data + `'>
-                    </div>`;
-                }else{
-                    return `<center><img loading="lazy" class="rounded-circle img-radius align-top m-r-15" data-toggle="popover"
-                        data-html="true"
-                        loading="lazy"
-                        style="object-fit:cover; width: 40px; height: 40px;"
-                        data-placement="right"
-                        data-content="<center><img loading='lazy' src='{% static 'images/dashboard/profile.jpg' %}' style='width: 250px; height: 250px; object-fit:cover;'></center>" src="{% static 'images/dashboard/profile.jpg' %}">
-                    </center>`;
-                }
-            },
-            searchable:'false',
-            sortable:'false',
-            className: 'text-center'
         },
         {'data': 'tracking_number','name':'transaction.tracking_number', 'className': 'text-start', 'sortable': false },
         {'data': 'client', 'name': 'transaction.client.client_bene_fullname', 'className': 'text-start', 'sortable': false },
         {'data': 'beneficiary', 'name': 'transaction.bene.client_bene_fullname', 'className': 'text-start', 'sortable': false },
         {'data': 'verified_time_start', 'className': 'text-center', 'searchable':false},
         {'data': 'swo', 'name': 'transaction.swo.get_fullname', 'className': 'text-center', 'searchable':false, 'sortable': false},
-        {'data': 'case_study','name':'transaction.is_case_study', 'className': 'text-center', 'searchable':false, 
-            'render': function(data,type,row,meta){
-                if(row['case_study'] == '2'){
-                    if(row['status'] == 6){
-                        if(row['case_study_status'] == '1'){
-                            return "<a href='#' data-role='remove_case_study', 'className': 'text-start', data-id="+ row['transaction'] + ">Remove</a>"+ " - " +"Case study submitted"
-                        }else{
-                            return "For Case Study"
-                        }
-                    }else{
-                        return "For Case Study"
-                    }
-                }else{
-                    return "Not Case Study"
-                }
-            }
-        },
-        {'data': 'case_study_status', 'className': 'text-center', 'searchable': false,
-            'render': function(data,type,row,meta){
-                if(row['case_study_status'] == 1){
-                    return "<span class='badge badge-dark'>Submitted</span>"
-                }else{
-                    return "<span class='badge badge-dark'>N/a</span>"
-                }
-            }
-        },
         {'data': 'assistance_type', 'className': 'text-center', 'searchable': false, 'sortable': false },
-        {'data': 'service_provider', 'name': 'transaction.service_provider.name', 'className': 'text-start', 'sortable': false },
-        {'data': 'mode_of_release', 'name': 'transaction.mode_of_release', 'className': 'text-center', 'sortable': false, 'searchable': false,
-            'render': function(data,type,row,meta){
-                if(row['mode_of_release'] == 0){
-                    return "<span class='badge bg-light text-dark'>CASH</span>"
-                }else{
-                    return "<span class='badge bg-light text-dark'>GL</span>"
-                }
-            }
-        },
-        {'data': 'total_amount', 'name': 'transaction.total_amount', 'className': 'text-center', 'searchable': false, 'sortable': false,
-            'render': function(data, type, row, meta) {
-                // Check if total_amount is null or undefined
-                if (data === null || data === undefined) {
-                    return 'N/a';
-                }
-                // Check if data already contains commas
-                if (data.includes(',')) {
-                    // Retain the original formatting if already contains commas
-                    return data;
-                }
-                // Format the total_amount with commas for thousands (PHP currency) without the "P" symbol
-                return parseFloat(data).toLocaleString('en-PH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-            }
-        },
-        {'data': 'dv_number', 'name': 'transaction.dv_number', 'className': 'text-center', 'searchable': false, 'sortable': false},
     ]
   });
 </script>
