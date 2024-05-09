@@ -156,7 +156,7 @@
 <!-- End Get Started Section -->
     <section id="directory" class="team">
       <div class="container" data-aos="fade-up">
-        <section id="features" class="features section-bg">
+        {% comment %} <section id="features" class="features section-bg">
           <div class="container" data-aos="fade-up">
             <ul class="nav nav-tabs row  g-2 d-flex">
     
@@ -182,7 +182,7 @@
                               <th class="text-center">Date of Transaction</th>
                               <th>Social Worker</th>
                               {% comment %} <th class="display-none">Case Study</th> {% endcomment %}
-                              <th class="text-center">Assistance type</th>
+                              {% comment %} <th class="text-center">Assistance type</th>
                           </tr>
                       </thead>
                     </table>
@@ -191,7 +191,7 @@
               </div><!-- End tab content item -->
             </div>
           </div>
-        </section>
+        </section> {% endcomment %}
         <div class="row gy-5">
           <div class="col-lg-4 col-md-6 member" data-aos="fade-up" data-aos-delay="100">
             <div class="member-img">
@@ -544,62 +544,62 @@
         {'data': 'contact_no','className': 'text-center', 'searchable': false,'sortable': false},
     ]
   });
-  $('#incoming-table').DataTable({
-    'serverSide': true,
-    'processing': true,
-    'deferRender': true,
-    'lengthMenu': [ 15, 30, 50, 100, 200 ],
-    'order': [[ 0, 'desc' ]],
-    'bDestroy': true,
-    'ajax': {
-        'url': 'https://caraga-aicshelps.dswd.gov.ph/api/requests/transaction/kiosk/list/?format=datatables',
-        'type': 'GET',
-        'data': function(d) {
-            d.page = d.start / d.length + 1;  // Calculate the current page based on start and length
-            d.page_size = d.length;  // Send the page size
-        },
-        'beforeSend': function (request) {
-					request.setRequestHeader("Authorization", "Token de30b7d6eb14aacd7ab632609d2ec3430c6ef01f")
-				}
-    },
-    'fnCreatedRow': function (row, data, index) {
-        $(row).attr('id', data['id']);
-    }, 
-    'columns': [
-        {'data': 'id',
-            'render': function(data, type, row, meta) {
-                return meta.row + meta.settings._iDisplayStart + 1;
-            },
-        },
-        {'data': 'status', 'className': 'text-center', 'searchable': false,
-            'render': function(data,type,row,meta){
-                if(row['status'] == null){
-                    return "N/a"
-                }else if(row['status'] == 1){
-                    return "Pending"
-                }else if(row['status'] == 2){
-                    return "Ongoing"
-                }else if(row['status'] == 3){
-                    return "For Uploading Picture"
-                }else if(row['status'] == 4){
-                    return "Hold"
-                }else if(row['status'] == 5){
-                    return "Cancelled"
-                }else if(row['status'] == 6){
-                    return "Completed"
-                }else if(row['status'] == 7){
-                    return "Ongoing"
-                }
-            }
-        },
-        {'data': 'tracking_number','name':'transaction.tracking_number', 'className': 'text-start', 'sortable': false },
-        {'data': 'client', 'name': 'transaction.client.client_bene_fullname', 'className': 'text-start', 'sortable': false },
-        {'data': 'beneficiary', 'name': 'transaction.bene.client_bene_fullname', 'className': 'text-start', 'sortable': false },
-        {'data': 'verified_time_start', 'className': 'text-center', 'searchable':false},
-        {'data': 'swo', 'name': 'transaction.swo.get_fullname', 'className': 'text-center', 'searchable':false, 'sortable': false},
-        {'data': 'assistance_type', 'className': 'text-center', 'searchable': false, 'sortable': false },
-    ]
-  });
+  //$('#incoming-table').DataTable({
+  //  'serverSide': true,
+  //  'processing': true,
+  //  'deferRender': true,
+  //  'lengthMenu': [ 15, 30, 50, 100, 200 ],
+  //  'order': [[ 0, 'desc' ]],
+  //  'bDestroy': true,
+  //  'ajax': {
+  //      'url': 'https://caraga-aicshelps.dswd.gov.ph/api/requests/transaction/kiosk/list/?format=datatables',
+  //      'type': 'GET',
+  //      'data': function(d) {
+  //          d.page = d.start / d.length + 1;  // Calculate the current page based on start and length
+  //          d.page_size = d.length;  // Send the page size
+  //     },
+  //      'beforeSend': function (request) {
+	//				request.setRequestHeader("Authorization", "Token de30b7d6eb14aacd7ab632609d2ec3430c6ef01f")
+	//			}
+  //  },
+  //  'fnCreatedRow': function (row, data, index) {
+  //      $(row).attr('id', data['id']);
+  //  }, 
+  //  'columns': [
+  //      {'data': 'id',
+  //          'render': function(data, type, row, meta) {
+  //              return meta.row + meta.settings._iDisplayStart + 1;
+  //          },
+  //      },
+  //      {'data': 'status', 'className': 'text-center', 'searchable': false,
+  //          'render': function(data,type,row,meta){
+  //              if(row['status'] == null){
+  //                  return "N/a"
+  //              }else if(row['status'] == 1){
+  //                  return "Pending"
+  //              }else if(row['status'] == 2){
+  //                  return "Ongoing"
+  //              }else if(row['status'] == 3){
+  //                  return "For Uploading Picture"
+  //              }else if(row['status'] == 4){
+  //                  return "Hold"
+  //              }else if(row['status'] == 5){
+  //                  return "Cancelled"
+  //              }else if(row['status'] == 6){
+  //                  return "Completed"
+  //              }else if(row['status'] == 7){
+  //                  return "Ongoing"
+  //              }
+  //          }
+  //      },
+  //      {'data': 'tracking_number','name':'transaction.tracking_number', 'className': 'text-start', 'sortable': false },
+  //      {'data': 'client', 'name': 'transaction.client.client_bene_fullname', 'className': 'text-start', 'sortable': false },
+  //      {'data': 'beneficiary', 'name': 'transaction.bene.client_bene_fullname', 'className': 'text-start', 'sortable': false },
+  //      {'data': 'verified_time_start', 'className': 'text-center', 'searchable':false},
+  //      {'data': 'swo', 'name': 'transaction.swo.get_fullname', 'className': 'text-center', 'searchable':false, 'sortable': false},
+  //      {'data': 'assistance_type', 'className': 'text-center', 'searchable': false, 'sortable': false },
+  //  ]
+  //});
 </script>
 <script>
   $('#submitQue').on('submit', function(e){
