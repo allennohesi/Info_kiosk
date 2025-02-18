@@ -71,9 +71,9 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'kioskdb',
-        'HOST': 'localhost',
-        'USER': 'root',
-        'PASSWORD': '',
+        'HOST': '172.31.240.127',
+        'USER': 'mpberay',
+        'PASSWORD': 'M@tth3w6m!c$',
         'PORT': '3306'
     },
     # 'default': {
