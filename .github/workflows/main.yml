@@ -23,8 +23,14 @@ jobs:
           echo "SSH User: ${{ secrets.SSH_USER }}"
           echo "Server IP: ${{ secrets.SERVER_IP }}"
 
+      - name: Test server connectivity (ping)
+        run: |
+          echo "Testing server connectivity..."
+          ping -c 4 ${{ secrets.SERVER_IP }}
+
       - name: Test git pull and restart commands
         run: |
+          echo "Attempting SSH connection..."
           ssh -v -o ConnectTimeout=600 -o ServerAliveInterval=60 -o ServerAliveCountMax=10 -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd /opt/apps/Info_kiosk
             git pull origin main
