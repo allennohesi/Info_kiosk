@@ -1,0 +1,8 @@
+.idea
+media
+__pycache__
+*.pyc
+venv
+CACHE
+.git
+settings.py
