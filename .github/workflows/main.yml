@@ -23,12 +23,11 @@ jobs:
           echo "SSH User: ${{ secrets.SSH_USER }}"
           echo "Server IP: ${{ secrets.SERVER_IP }}"
 
-      - name: Deploy to Ubuntu Server
+      - name: Test git pull and restart commands
         run: |
           ssh -v -o ConnectTimeout=60 -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
             cd /opt/apps/Info_kiosk
             git pull origin main
-            source /opt/apps/Info_kiosk/env/bin/activate
             sudo systemctl restart gunicorn
             sudo systemctl restart nginx
           EOF
